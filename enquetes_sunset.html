@@ -29,6 +29,31 @@
       position: relative;
       overflow: hidden;
     }
+    .btn-retour {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(245, 230, 200, 0.15);
+      border: 1.5px solid rgba(245, 230, 200, 0.4);
+      border-radius: 3px;
+      color: #f5e6c8;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 2;
+    }
+    .btn-retour:hover {
+      background: rgba(245, 230, 200, 0.3);
+      border-color: #f5e6c8;
+    }
     .header-band::before {
       content: '';
       position: absolute;
@@ -473,6 +498,7 @@
 
   <!-- ═══ HEADER ═══ -->
   <div class="header-band">
+    <a href="index.html" class="btn-retour">← Retour</a>
     <h1>📜 Dossiers d'Enquête</h1>
     <p class="subtitle">Bureau des Shérifs de Sunset — État du Texas</p>
     <div class="star-badge">🔒 Confidentiel</div>
@@ -543,7 +569,7 @@
         <div class="divider"><span>Journal d'enquête</span></div>
 
         <!-- Ajouter une entrée (visible si admin) -->
-        <div id="box-nouvelle-entree" class="hidden">
+        <div id="box-nouvelle-entree">
           <div style="background:#e8d5b5; border:1px solid #b8956a; border-radius:4px; padding:14px; margin-bottom:20px;">
             <h4 style="margin:0 0 10px; color:#5d2e0f; font-size:14px;">📝 Ajouter une entrée au dossier</h4>
             <div class="form-row">
@@ -639,8 +665,7 @@
     function updateAdminUI() {
       document.getElementById('admin-login').classList.toggle('hidden', isAdmin);
       document.getElementById('admin-connected').classList.toggle('hidden', !isAdmin);
-      const box = document.getElementById('box-nouvelle-entree');
-      if (box) box.classList.toggle('hidden', !isAdmin);
+      // Le formulaire d'ajout d'entrée est visible pour tout le monde
     }
 
     // ═══════════════════════════════════════
@@ -758,7 +783,6 @@
     //  ENTRÉES (TIMELINE)
     // ═══════════════════════════════════════
     function ajouterEntree() {
-      if (!isAdmin) return;
       const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
       if (!enq) return;
       const date = document.getElementById('entree-date').value;
