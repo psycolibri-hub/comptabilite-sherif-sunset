@@ -330,7 +330,7 @@
 
   <main>
     <div class="nav-grid">
-      <a href="codepenal.html" class="nav-card" target="_blank">
+      <a href="codepenal.html" class="nav-card">
         <svg class="icon" viewBox="0 0 24 24">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
           <polyline points="14 2 14 8 20 8"/>
@@ -342,7 +342,7 @@
         <p>Les lois de la ville de Sunset, article par article.</p>
       </a>
 
-      <a href="effectifs.html" class="nav-card" target="_blank">
+      <a href="effectifs.html" class="nav-card">
         <svg class="icon" viewBox="0 0 24 24">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
           <circle cx="12" cy="7" r="4"/>
@@ -352,7 +352,7 @@
         <p>Les hommes et femmes en charge de l'ordre à Sunset.</p>
       </a>
 
-      <a href="bureau_sheriffs_sunset.html" class="nav-card" target="_blank">
+      <a href="bureau_sheriffs_sunset.html" class="nav-card">
         <svg class="icon" viewBox="0 0 24 24">
           <line x1="12" y1="1" x2="12" y2="23"/>
           <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
@@ -361,7 +361,7 @@
         <p>Les amendes, récompenses et finances du bureau.</p>
       </a>
 
-      <a href="enquetes_sunset.html" class="nav-card" target="_blank">
+      <a href="enquetes_sunset.html" class="nav-card">
         <svg class="icon" viewBox="0 0 24 24">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
           <polyline points="14 2 14 8 20 8"/>
@@ -393,15 +393,26 @@
 
     function startMusic() {
       if (musicStarted) return;
+      bgMusic.volume = 0.4;
       bgMusic.play().then(() => {
         musicStarted = true;
       }).catch(err => {
-        console.log('Autoplay bloqué par le navigateur');
+        console.log('Autoplay bloqué:', err);
       });
     }
 
-    // Démarre la musique au premier clic n'importe où sur la page
-    document.addEventListener('click', startMusic, { once: true });
+    // Intercepter les clics sur les cartes de navigation
+    document.querySelectorAll('.nav-card').forEach(card => {
+      card.addEventListener('click', function(e) {
+        e.preventDefault();           // Empêche la navigation immédiate
+        const href = this.getAttribute('href');
+        startMusic();                 // Démarre la musique DANS le geste utilisateur
+        // Ouvre le lien dans un nouvel onglet après un court délai
+        setTimeout(() => {
+          window.open(href, '_blank');
+        }, 100);
+      });
+    });
   </script>
 </body>
 </html>
