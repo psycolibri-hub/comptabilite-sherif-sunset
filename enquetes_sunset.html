@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bureau des Shérifs de Sunset — Dossiers d'Enquête</title>
   <style>
-    /* ═══════════════════════════════════════
-       DESIGN WESTERN — RED DEAD STYLE
-       ═══════════════════════════════════════ */
     * { box-sizing: border-box; }
 
     body {
@@ -19,7 +16,6 @@
       min-height: 100vh;
     }
 
-    /* ─── Header Cuir ─── */
     .header-band {
       background: linear-gradient(180deg, #5d2e0f 0%, #3e1f0a 100%);
       border-bottom: 4px solid #8b5a2b;
@@ -28,31 +24,6 @@
       text-align: center;
       position: relative;
       overflow: hidden;
-    }
-    .btn-retour {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      background: rgba(245, 230, 200, 0.15);
-      border: 1.5px solid rgba(245, 230, 200, 0.4);
-      border-radius: 3px;
-      color: #f5e6c8;
-      font-family: Georgia, serif;
-      font-size: 13px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
-      z-index: 2;
-    }
-    .btn-retour:hover {
-      background: rgba(245, 230, 200, 0.3);
-      border-color: #f5e6c8;
     }
     .header-band::before {
       content: '';
@@ -92,15 +63,38 @@
       text-transform: uppercase;
       position: relative;
     }
+    .btn-retour {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(245, 230, 200, 0.15);
+      border: 1.5px solid rgba(245, 230, 200, 0.4);
+      border-radius: 3px;
+      color: #f5e6c8;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 2;
+    }
+    .btn-retour:hover {
+      background: rgba(245, 230, 200, 0.3);
+      border-color: #f5e6c8;
+    }
 
-    /* ─── Container Principal ─── */
     .main-wrap {
       max-width: 1000px;
       margin: 24px auto;
       padding: 0 16px;
     }
 
-    /* ─── Carte Papier ─── */
     .paper-card {
       background: #f5e6c8;
       border: 2px solid #8b5a2b;
@@ -119,7 +113,6 @@
       pointer-events: none;
     }
 
-    /* ─── Tampon CONFIDENTIEL ─── */
     .stamp-confidential {
       position: absolute;
       top: 20px;
@@ -137,7 +130,6 @@
       z-index: 1;
     }
 
-    /* ─── Séparateur décoratif ─── */
     .divider {
       display: flex;
       align-items: center;
@@ -157,7 +149,6 @@
       text-transform: uppercase;
     }
 
-    /* ─── Boutons Western ─── */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -200,7 +191,6 @@
       font-size: 12px;
     }
 
-    /* ─── Inputs ─── */
     .input-western {
       padding: 8px 12px;
       border: 2px solid #b8956a;
@@ -228,7 +218,6 @@
       min-height: 80px;
     }
 
-    /* ─── Badges Statut ─── */
     .badge {
       display: inline-block;
       padding: 3px 10px;
@@ -244,7 +233,6 @@
     .badge-resolue { background: #d4edda; color: #155724; border-color: #4a7c59; }
     .badge-classée { background: #d6d6d6; color: #4a4a4a; border-color: #8b7355; }
 
-    /* ─── Grille Dossiers ─── */
     .dossier-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -292,7 +280,6 @@
       margin-top: 8px;
     }
 
-    /* ─── Timeline Enquête ─── */
     .timeline {
       position: relative;
       padding-left: 28px;
@@ -375,7 +362,6 @@
       text-align: right;
     }
 
-    /* ─── Formulaire Nouvelle Entrée ─── */
     .form-row {
       display: flex;
       gap: 10px;
@@ -391,7 +377,6 @@
       min-width: 80px;
     }
 
-    /* ─── Connexion Admin ─── */
     .admin-box {
       background: #e8d5b5;
       border: 2px solid #8b5a2b;
@@ -424,7 +409,6 @@
       margin-bottom: 12px;
     }
 
-    /* ─── Navigation Retour ─── */
     .nav-back {
       display: inline-flex;
       align-items: center;
@@ -442,7 +426,6 @@
       border-bottom-color: #5d2e0f;
     }
 
-    /* ─── Empty State ─── */
     .empty-state {
       text-align: center;
       padding: 40px 20px;
@@ -458,7 +441,6 @@
       font-size: 15px;
     }
 
-    /* ─── Footer ─── */
     .page-footer {
       text-align: center;
       padding: 20px;
@@ -468,7 +450,6 @@
       letter-spacing: 1px;
     }
 
-    /* ─── Toolbar ─── */
     .toolbar-top {
       display: flex;
       gap: 8px;
@@ -480,15 +461,172 @@
       flex: 1;
     }
 
-    /* ─── Hidden ─── */
     .hidden { display: none !important; }
 
-    /* ─── Responsive ─── */
+    /* ═══ PERSONNES & PHOTOS ═══ */
+    .personnes-section {
+      margin-top: 20px;
+    }
+    .personne-card {
+      background: #faf3e0;
+      border: 1.5px solid #c4a882;
+      border-radius: 4px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 1px 2px 6px rgba(62,31,10,0.08);
+    }
+    .personne-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .personne-nom {
+      font-size: 16px;
+      font-weight: bold;
+      color: #3e1f0a;
+    }
+    .personne-role {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid;
+    }
+    .role-suspect  { background: #f5b7b1; color: #7b241c; border-color: #c0392b; }
+    .role-temoin   { background: #e3d5c0; color: #5d4037; border-color: #b8956a; }
+    .role-victime  { background: #d4e6f1; color: #1a5276; border-color: #7fb3d5; }
+    .role-inconnu  { background: #d6d6d6; color: #4a4a4a; border-color: #8b7355; }
+    .role-officier { background: #d5f5e3; color: #145a32; border-color: #52be80; }
+
+    .photo-gallery {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .photo-thumb {
+      width: 100px;
+      height: 120px;
+      object-fit: cover;
+      border: 2px solid #a08050;
+      border-radius: 3px;
+      cursor: zoom-in;
+      background: #e8d5b5;
+      transition: transform 0.2s;
+    }
+    .photo-thumb:hover {
+      transform: scale(1.05);
+      border-color: #5d2e0f;
+    }
+    .photo-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .photo-wrap .btn-delete-photo {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      background: #8b1a1a;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .photo-wrap:hover .btn-delete-photo {
+      opacity: 1;
+    }
+
+    .form-ajout-personne {
+      background: #e8d5b5;
+      border: 1.5px dashed #a08050;
+      border-radius: 4px;
+      padding: 14px;
+      margin-top: 14px;
+    }
+    .form-ajout-personne h4 {
+      margin: 0 0 10px;
+      color: #5d2e0f;
+      font-size: 14px;
+    }
+    .file-input-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .file-input-wrap input[type="file"] {
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .file-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: #5d2e0f;
+      color: #f5e6c8;
+      border: 2px solid #3e1f0a;
+      border-radius: 3px;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .preview-zone {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      min-height: 40px;
+    }
+    .preview-zone img {
+      width: 60px;
+      height: 75px;
+      object-fit: cover;
+      border: 1.5px solid #a08050;
+      border-radius: 3px;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      cursor: zoom-out;
+    }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border: 4px solid #f5e6c8;
+      border-radius: 4px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.6);
+    }
+
     @media (max-width: 600px) {
       .header-band h1 { font-size: 22px; letter-spacing: 3px; }
       .dossier-grid { grid-template-columns: 1fr; }
       .timeline { padding-left: 20px; }
       .timeline-entry::before { left: -18px; }
+      .btn-retour { font-size: 11px; padding: 4px 10px; }
     }
   </style>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -496,7 +634,6 @@
 </head>
 <body>
 
-  <!-- ═══ HEADER ═══ -->
   <div class="header-band">
     <a href="index.html" class="btn-retour">← Retour</a>
     <h1>📜 Dossiers d'Enquête</h1>
@@ -506,7 +643,7 @@
 
   <div class="main-wrap">
 
-    <!-- ═══ VUE : LISTE DES ENQUÊTES ═══ -->
+    <!-- ═══ VUE : LISTE ═══ -->
     <div id="vue-liste">
       <div class="paper-card">
         <div class="toolbar-top">
@@ -515,9 +652,7 @@
           <button class="btn btn-primary" onclick="showNouvelleEnquete()">➕ Nouvelle enquête</button>
         </div>
         <div class="divider"><span>Registre</span></div>
-        <div id="liste-enquetes" class="dossier-grid">
-          <!-- Rempli par JS -->
-        </div>
+        <div id="liste-enquetes" class="dossier-grid"></div>
         <div id="empty-enquetes" class="empty-state hidden">
           <div class="empty-icon">📂</div>
           <p>Aucun dossier d'enquête n'a été ouvert pour le moment.</p>
@@ -553,7 +688,7 @@
       </div>
     </div>
 
-    <!-- ═══ VUE : DÉTAIL ENQUÊTE ═══ -->
+    <!-- ═══ VUE : DÉTAIL ═══ -->
     <div id="vue-detail" class="hidden">
       <div class="paper-card" style="position:relative;">
         <div id="detail-stamp" class="stamp-confidential hidden">Confidentiel</div>
@@ -568,7 +703,7 @@
         </div>
         <div class="divider"><span>Journal d'enquête</span></div>
 
-        <!-- Ajouter une entrée (visible si admin) -->
+        <!-- Ajouter une entrée -->
         <div id="box-nouvelle-entree">
           <div style="background:#e8d5b5; border:1px solid #b8956a; border-radius:4px; padding:14px; margin-bottom:20px;">
             <h4 style="margin:0 0 10px; color:#5d2e0f; font-size:14px;">📝 Ajouter une entrée au dossier</h4>
@@ -593,12 +728,49 @@
         </div>
 
         <!-- Timeline -->
-        <div id="detail-timeline" class="timeline">
-          <!-- Rempli par JS -->
-        </div>
+        <div id="detail-timeline" class="timeline"></div>
         <div id="empty-timeline" class="empty-state hidden">
           <div class="empty-icon">📜</div>
           <p>Aucune entrée n'a encore été ajoutée à ce dossier.</p>
+        </div>
+
+        <div class="divider"><span>Personnes concernées</span></div>
+
+        <!-- Personnes -->
+        <div id="detail-personnes" class="personnes-section"></div>
+        <div id="empty-personnes" class="empty-state hidden">
+          <div class="empty-icon">👤</div>
+          <p>Aucune personne n'a été ajoutée à ce dossier.</p>
+        </div>
+
+        <!-- Ajouter une personne -->
+        <div id="box-nouvelle-personne">
+          <div class="form-ajout-personne">
+            <h4>➕ Ajouter une personne au dossier</h4>
+            <div class="form-row">
+              <input type="text" id="pers-nom" class="input-western" placeholder="Nom et prénom" style="min-width:160px;">
+              <select id="pers-role" class="input-western" style="min-width:130px;">
+                <option value="suspect">🎯 Suspect</option>
+                <option value="temoin">🗣️ Témoin</option>
+                <option value="victime">💔 Victime</option>
+                <option value="officier">👮 Officier</option>
+                <option value="inconnu">❓ Inconnu</option>
+              </select>
+            </div>
+            <div class="form-row" style="align-items:flex-start;">
+              <label>Photos :</label>
+              <div style="flex:1;">
+                <div class="file-input-wrap">
+                  <button class="file-btn">📷 Choisir des photos</button>
+                  <input type="file" id="pers-photos" accept="image/*" multiple onchange="handlePhotoSelect(this)">
+                </div>
+                <div id="photo-preview" class="preview-zone"></div>
+              </div>
+            </div>
+            <div style="text-align:right; margin-top:8px;">
+              <button class="btn btn-primary" onclick="ajouterPersonne()">📌 Enregistrer la personne</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -608,7 +780,7 @@
       <div id="admin-login">
         <div class="admin-box">
           <h3>🔐 Accès Administrateur</h3>
-          <p style="font-size:12px; color:#8b7355; margin-bottom:12px;">Connexion requise pour modifier les dossiers</p>
+          <p style="font-size:12px; color:#8b7355; margin-bottom:12px;">Connexion requise pour supprimer des éléments</p>
           <input type="email" id="admin-email" class="input-western" placeholder="Adresse email">
           <input type="password" id="admin-password" class="input-western" placeholder="Mot de passe">
           <button class="btn btn-primary" style="width:100%; margin-top:4px;" onclick="loginAdmin()">Se connecter</button>
@@ -627,9 +799,6 @@
   </div>
 
   <script>
-    // ═══════════════════════════════════════
-    //  CONFIG SUPABASE
-    // ═══════════════════════════════════════
     const SUPABASE_URL = "https://dzdnhnmwluznrxijkkzc.supabase.co";
     const SUPABASE_KEY = "sb_publishable_SLzbwvcRvPc4L1NOj_Yk8w_GvM-p8xa";
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -640,9 +809,10 @@
     let appData = { enquetes: [] };
     let currentEnqueteId = null;
     let isAdmin = false;
+    let pendingPhotos = []; // base64 strings en attente
 
     // ═══════════════════════════════════════
-    //  AUTH ADMIN
+    //  AUTH
     // ═══════════════════════════════════════
     async function loginAdmin() {
       const email = document.getElementById('admin-email').value.trim();
@@ -654,26 +824,21 @@
       updateAdminUI();
       alert('Connexion administrateur réussie');
     }
-
     function logoutAdmin() {
       isAdmin = false;
       document.getElementById('admin-email').value = '';
       document.getElementById('admin-password').value = '';
       updateAdminUI();
     }
-
     function updateAdminUI() {
       document.getElementById('admin-login').classList.toggle('hidden', isAdmin);
       document.getElementById('admin-connected').classList.toggle('hidden', !isAdmin);
-      // Le formulaire d'ajout d'entrée est visible pour tout le monde
     }
 
     // ═══════════════════════════════════════
     //  DONNÉES
     // ═══════════════════════════════════════
-    function getDefaultData() {
-      return { enquetes: [] };
-    }
+    function getDefaultData() { return { enquetes: [] }; }
 
     async function saveData() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
@@ -682,9 +847,7 @@
           .from('bureau_data')
           .upsert({ session_id: SESSION_ID, data: appData, updated_at: new Date().toISOString() }, { onConflict: 'session_id' });
         if (error) throw error;
-      } catch (err) {
-        console.error('Erreur sync Supabase:', err);
-      }
+      } catch (err) { console.error('Erreur sync Supabase:', err); }
     }
 
     async function loadData() {
@@ -720,7 +883,6 @@
       currentEnqueteId = null;
       renderListe();
     }
-
     function showNouvelleEnquete() {
       document.getElementById('vue-liste').classList.add('hidden');
       document.getElementById('vue-nouvelle').classList.remove('hidden');
@@ -729,7 +891,6 @@
       document.getElementById('new-date').value = new Date().toISOString().slice(0,10);
       document.getElementById('new-statut').value = 'ouverte';
     }
-
     function showDetail(id) {
       currentEnqueteId = id;
       document.getElementById('vue-liste').classList.add('hidden');
@@ -752,12 +913,12 @@
         titre: titre,
         date: date || new Date().toISOString().slice(0,10),
         statut: statut,
-        entrees: []
+        entrees: [],
+        personnes: []
       });
       saveData();
       showDetail(id);
     }
-
     function supprimerEnquete(id, event) {
       event.stopPropagation();
       if (!isAdmin) { alert('Connexion administrateur requise.'); return; }
@@ -766,20 +927,14 @@
       saveData();
       renderListe();
     }
-
     function changerStatut(id, nouveauStatut) {
       if (!isAdmin) { alert('Connexion administrateur requise.'); return; }
       const enq = appData.enquetes.find(e => e.id === id);
-      if (enq) {
-        enq.statut = nouveauStatut;
-        saveData();
-        renderDetail();
-        renderListe();
-      }
+      if (enq) { enq.statut = nouveauStatut; saveData(); renderDetail(); renderListe(); }
     }
 
     // ═══════════════════════════════════════
-    //  ENTRÉES (TIMELINE)
+    //  ENTRÉES
     // ═══════════════════════════════════════
     function ajouterEntree() {
       const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
@@ -798,23 +953,92 @@
         auteur: auteur || 'Anonyme',
         contenu: contenu
       });
-      // Reset form
       document.getElementById('entree-contenu').value = '';
       document.getElementById('entree-heure').value = '';
       document.getElementById('entree-auteur').value = '';
       saveData();
       renderDetail();
     }
-
     function supprimerEntree(index) {
-      if (!isAdmin) return;
+      if (!isAdmin) { alert('Connexion administrateur requise.'); return; }
       if (!confirm('Supprimer cette entrée ?')) return;
       const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
-      if (enq) {
-        enq.entrees.splice(index, 1);
+      if (enq) { enq.entrees.splice(index, 1); saveData(); renderDetail(); }
+    }
+
+    // ═══════════════════════════════════════
+    //  PERSONNES & PHOTOS
+    // ═══════════════════════════════════════
+    function handlePhotoSelect(input) {
+      pendingPhotos = [];
+      const preview = document.getElementById('photo-preview');
+      preview.innerHTML = '';
+      if (!input.files || !input.files.length) return;
+
+      Array.from(input.files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          pendingPhotos.push(e.target.result);
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function ajouterPersonne() {
+      const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
+      if (!enq) return;
+      const nom = document.getElementById('pers-nom').value.trim();
+      const role = document.getElementById('pers-role').value;
+      if (!nom) { alert('Veuillez indiquer le nom de la personne.'); return; }
+
+      enq.personnes.push({
+        id: 'PER-' + Date.now().toString(36).toUpperCase(),
+        nom: nom,
+        role: role,
+        photos: pendingPhotos.slice()
+      });
+
+      // Reset
+      document.getElementById('pers-nom').value = '';
+      document.getElementById('pers-role').value = 'suspect';
+      document.getElementById('pers-photos').value = '';
+      document.getElementById('photo-preview').innerHTML = '';
+      pendingPhotos = [];
+
+      saveData();
+      renderDetail();
+    }
+
+    function supprimerPersonne(persIndex) {
+      if (!isAdmin) { alert('Connexion administrateur requise.'); return; }
+      if (!confirm('Supprimer cette personne du dossier ?')) return;
+      const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
+      if (enq) { enq.personnes.splice(persIndex, 1); saveData(); renderDetail(); }
+    }
+
+    function supprimerPhoto(persIndex, photoIndex) {
+      if (!isAdmin) { alert('Connexion administrateur requise.'); return; }
+      if (!confirm('Supprimer cette photo ?')) return;
+      const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
+      if (enq && enq.personnes[persIndex]) {
+        enq.personnes[persIndex].photos.splice(photoIndex, 1);
         saveData();
         renderDetail();
       }
+    }
+
+    function openLightbox(src) {
+      const lb = document.createElement('div');
+      lb.className = 'lightbox';
+      lb.onclick = () => lb.remove();
+      const img = document.createElement('img');
+      img.src = src;
+      lb.appendChild(img);
+      document.body.appendChild(lb);
     }
 
     // ═══════════════════════════════════════
@@ -824,29 +1048,16 @@
       const container = document.getElementById('liste-enquetes');
       const empty = document.getElementById('empty-enquetes');
       container.innerHTML = '';
-      if (!appData.enquetes.length) {
-        empty.classList.remove('hidden');
-        return;
-      }
+      if (!appData.enquetes.length) { empty.classList.remove('hidden'); return; }
       empty.classList.add('hidden');
-      // Tri : les plus récentes d'abord
       const sorted = [...appData.enquetes].sort((a,b) => new Date(b.date) - new Date(a.date));
       sorted.forEach(enq => {
         const card = document.createElement('div');
         card.className = 'dossier-card';
         card.onclick = () => showDetail(enq.id);
-        const badgeClass = {
-          ouverte: 'badge-ouverte',
-          cours: 'badge-cours',
-          resolue: 'badge-resolue',
-          classee: 'badge-classée'
-        }[enq.statut] || 'badge-ouverte';
-        const badgeText = {
-          ouverte: 'Ouverte',
-          cours: 'En cours',
-          resolue: 'Résolue',
-          classee: 'Classée'
-        }[enq.statut] || 'Ouverte';
+        const badgeClass = { ouverte:'badge-ouverte', cours:'badge-cours', resolue:'badge-resolue', classee:'badge-classée' }[enq.statut] || 'badge-ouverte';
+        const badgeText = { ouverte:'Ouverte', cours:'En cours', resolue:'Résolue', classee:'Classée' }[enq.statut] || 'Ouverte';
+        const nbPers = (enq.personnes || []).length;
         card.innerHTML = `
           <div class="dossier-id">📁 ${escapeHtml(enq.id)}</div>
           <div class="dossier-titre">${escapeHtml(enq.titre)}</div>
@@ -855,8 +1066,9 @@
             <span style="margin-left:8px;">📅 ${formatDate(enq.date)}</span>
           </div>
           <div class="dossier-entrees">
-            📝 ${enq.entrees.length} entrée${enq.entrees.length > 1 ? 's' : ''}
-            ${isAdmin ? '<button class="btn btn-danger btn-small" style="float:right; margin-top:-4px;" onclick="supprimerEnquete(\'' + enq.id + '\', event)">🗑️</button>' : ''}
+            📝 ${enq.entrees.length} entrée${enq.entrees.length>1?'s':''}
+            &nbsp;|&nbsp; 👤 ${nbPers} personne${nbPers>1?'s':''}
+            ${isAdmin?'<button class="btn btn-danger btn-small" style="float:right; margin-top:-4px;" onclick="supprimerEnquete(\''+enq.id+'\',event)">🗑️</button>':''}
           </div>
         `;
         container.appendChild(card);
@@ -871,19 +1083,8 @@
       document.getElementById('detail-titre').textContent = enq.titre;
       document.getElementById('detail-meta').innerHTML = `Date d'ouverture : <b>${formatDate(enq.date)}</b>`;
 
-      const badgeClass = {
-        ouverte: 'badge-ouverte',
-        cours: 'badge-cours',
-        resolue: 'badge-resolue',
-        classee: 'badge-classée'
-      }[enq.statut] || 'badge-ouverte';
-      const badgeText = {
-        ouverte: 'Ouverte',
-        cours: 'En cours',
-        resolue: 'Résolue',
-        classee: 'Classée'
-      }[enq.statut] || 'Ouverte';
-
+      const badgeClass = { ouverte:'badge-ouverte', cours:'badge-cours', resolue:'badge-resolue', classee:'badge-classée' }[enq.statut] || 'badge-ouverte';
+      const badgeText = { ouverte:'Ouverte', cours:'En cours', resolue:'Résolue', classee:'Classée' }[enq.statut] || 'Ouverte';
       let statutHTML = `<span class="badge ${badgeClass}">${badgeText}</span>`;
       if (isAdmin) {
         statutHTML += `
@@ -897,13 +1098,9 @@
       }
       document.getElementById('detail-statut').innerHTML = statutHTML;
 
-      // Stamp confidentiel si pas résolue
       const stamp = document.getElementById('detail-stamp');
-      if (enq.statut !== 'resolue' && enq.statut !== 'classee') {
-        stamp.classList.remove('hidden');
-      } else {
-        stamp.classList.add('hidden');
-      }
+      if (enq.statut !== 'resolue' && enq.statut !== 'classee') stamp.classList.remove('hidden');
+      else stamp.classList.add('hidden');
 
       // Timeline
       const timeline = document.getElementById('detail-timeline');
@@ -913,27 +1110,18 @@
         emptyTimeline.classList.remove('hidden');
       } else {
         emptyTimeline.classList.add('hidden');
-        // Tri chronologique
         const sorted = [...enq.entrees].sort((a,b) => {
           const da = new Date(a.date + 'T' + (a.heure||'00:00'));
           const db = new Date(b.date + 'T' + (b.heure||'00:00'));
           return da - db;
         });
         sorted.forEach((ent, idx) => {
-          const typeLabels = {
-            temoignage: 'Témoignage',
-            indice: 'Indice',
-            suspect: 'Suspect',
-            preuve: 'Preuve',
-            rapport: 'Rapport',
-            note: 'Note'
-          };
-          const typeClass = 'type-' + ent.type;
+          const typeLabels = { temoignage:'Témoignage', indice:'Indice', suspect:'Suspect', preuve:'Preuve', rapport:'Rapport', note:'Note' };
           const div = document.createElement('div');
           div.className = 'timeline-entry';
           div.innerHTML = `
             <div class="entry-header">
-              <span class="entry-type ${typeClass}">${typeLabels[ent.type] || ent.type}</span>
+              <span class="entry-type type-${ent.type}">${typeLabels[ent.type] || ent.type}</span>
               <span class="entry-date">📅 ${formatDate(ent.date)} ${ent.heure ? '— 🕐 ' + ent.heure : ''}</span>
             </div>
             <div class="entry-content">${escapeHtml(ent.contenu)}</div>
@@ -944,7 +1132,47 @@
         });
       }
 
-      // Pré-remplir le formulaire d'entrée
+      // Personnes
+      const persContainer = document.getElementById('detail-personnes');
+      const emptyPers = document.getElementById('empty-personnes');
+      persContainer.innerHTML = '';
+      const personnes = enq.personnes || [];
+      if (!personnes.length) {
+        emptyPers.classList.remove('hidden');
+      } else {
+        emptyPers.classList.add('hidden');
+        personnes.forEach((pers, pIdx) => {
+          const roleLabels = { suspect:'Suspect', temoin:'Témoin', victime:'Victime', officier:'Officier', inconnu:'Inconnu' };
+          const card = document.createElement('div');
+          card.className = 'personne-card';
+          let photosHTML = '';
+          if (pers.photos && pers.photos.length) {
+            photosHTML = '<div class="photo-gallery">';
+            pers.photos.forEach((photo, phIdx) => {
+              photosHTML += `
+                <div class="photo-wrap">
+                  <img src="${photo}" class="photo-thumb" onclick="openLightbox('${photo}')" alt="Photo ${pers.nom}">
+                  ${isAdmin ? `<button class="btn-delete-photo" onclick="supprimerPhoto(${pIdx}, ${phIdx})">×</button>` : ''}
+                </div>
+              `;
+            });
+            photosHTML += '</div>';
+          }
+          card.innerHTML = `
+            <div class="personne-header">
+              <span class="personne-nom">👤 ${escapeHtml(pers.nom)}</span>
+              <span>
+                <span class="personne-role role-${pers.role}">${roleLabels[pers.role] || pers.role}</span>
+                ${isAdmin ? `<button class="btn btn-danger btn-small" style="margin-left:8px;" onclick="supprimerPersonne(${pIdx})">🗑️</button>` : ''}
+              </span>
+            </div>
+            ${photosHTML}
+          `;
+          persContainer.appendChild(card);
+        });
+      }
+
+      // Pré-remplir formulaires
       document.getElementById('entree-date').value = new Date().toISOString().slice(0,10);
       document.getElementById('entree-heure').value = new Date().toTimeString().slice(0,5);
       updateAdminUI();
@@ -957,7 +1185,6 @@
       if (!text) return '';
       return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
-
     function formatDate(dateStr) {
       if (!dateStr) return '—';
       const d = new Date(dateStr + 'T00:00:00');
