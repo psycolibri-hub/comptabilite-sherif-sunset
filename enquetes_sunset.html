@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bureau des Shérifs de Sunset — Dossiers d'Enquête</title>
+  <style>
+    /* ═══════════════════════════════════════
+       DESIGN WESTERN — RED DEAD STYLE
+       ═══════════════════════════════════════ */
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #c9b896 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="%23c9b896" width="100" height="100"/><circle cx="20" cy="20" r="1" fill="%23b8a684" opacity="0.4"/><circle cx="70" cy="60" r="1.5" fill="%23b8a684" opacity="0.3"/><circle cx="40" cy="80" r="1" fill="%23b8a684" opacity="0.4"/><circle cx="85" cy="25" r="1" fill="%23b8a684" opacity="0.3"/></svg>');
+      font-family: Georgia, 'Times New Roman', serif;
+      color: #3e1f0a;
+      min-height: 100vh;
+    }
+
+    /* ─── Header Cuir ─── */
+    .header-band {
+      background: linear-gradient(180deg, #5d2e0f 0%, #3e1f0a 100%);
+      border-bottom: 4px solid #8b5a2b;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header-band::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="2" fill="%238b5a2b" opacity="0.3"/></svg>');
+      pointer-events: none;
+    }
+    .header-band h1 {
+      margin: 0;
+      font-size: 32px;
+      color: #f5e6c8;
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(212,163,115,0.3);
+      position: relative;
+    }
+    .header-band .subtitle {
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: #d4a373;
+      font-style: italic;
+      letter-spacing: 2px;
+      position: relative;
+    }
+    .star-badge {
+      display: inline-block;
+      background: #d4a373;
+      color: #3e1f0a;
+      font-weight: bold;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 3px;
+      border: 2px solid #f5e6c8;
+      margin-top: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    /* ─── Container Principal ─── */
+    .main-wrap {
+      max-width: 1000px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    /* ─── Carte Papier ─── */
+    .paper-card {
+      background: #f5e6c8;
+      border: 2px solid #8b5a2b;
+      border-radius: 4px;
+      box-shadow: 0 2px 12px rgba(62,31,10,0.25), inset 0 0 80px rgba(139,90,43,0.08);
+      padding: 24px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .paper-card::before {
+      content: '';
+      position: absolute;
+      top: 8px; left: 8px; right: 8px; bottom: 8px;
+      border: 1px dashed rgba(139,90,43,0.25);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    /* ─── Tampon CONFIDENTIEL ─── */
+    .stamp-confidential {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      border: 3px double #a93226;
+      color: #a93226;
+      font-weight: bold;
+      font-size: 13px;
+      padding: 4px 12px;
+      transform: rotate(-12deg);
+      opacity: 0.7;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ─── Séparateur décoratif ─── */
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 16px 0;
+      color: #8b5a2b;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #8b5a2b, transparent);
+    }
+    .divider span {
+      padding: 0 16px;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    /* ─── Boutons Western ─── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border: 2px solid #5d2e0f;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #5d2e0f;
+      color: #f5e6c8;
+    }
+    .btn-primary:hover {
+      background: #3e1f0a;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: #5d2e0f;
+    }
+    .btn-ghost:hover {
+      background: rgba(93,46,15,0.08);
+    }
+    .btn-danger {
+      background: #8b1a1a;
+      color: #f5e6c8;
+      border-color: #5c0e0e;
+    }
+    .btn-danger:hover {
+      background: #5c0e0e;
+    }
+    .btn-small {
+      padding: 4px 10px;
+      font-size: 12px;
+    }
+
+    /* ─── Inputs ─── */
+    .input-western {
+      padding: 8px 12px;
+      border: 2px solid #b8956a;
+      border-radius: 3px;
+      background: #faf3e0;
+      color: #3e1f0a;
+      font-family: Georgia, serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-western:focus {
+      border-color: #5d2e0f;
+      box-shadow: 0 0 0 3px rgba(93,46,15,0.15);
+    }
+    .input-western::placeholder {
+      color: #a89070;
+      font-style: italic;
+    }
+    select.input-western {
+      cursor: pointer;
+    }
+    textarea.input-western {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* ─── Badges Statut ─── */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid;
+    }
+    .badge-ouverte { background: #e8d5b5; color: #8b6914; border-color: #c4a35a; }
+    .badge-cours   { background: #fff3cd; color: #856404; border-color: #e6c200; }
+    .badge-resolue { background: #d4edda; color: #155724; border-color: #4a7c59; }
+    .badge-classée { background: #d6d6d6; color: #4a4a4a; border-color: #8b7355; }
+
+    /* ─── Grille Dossiers ─── */
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .dossier-card {
+      background: linear-gradient(135deg, #faf3e0 0%, #f0e2c4 100%);
+      border: 2px solid #a08050;
+      border-radius: 4px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+      box-shadow: 2px 2px 8px rgba(62,31,10,0.15);
+    }
+    .dossier-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 4px 6px 16px rgba(62,31,10,0.25);
+      border-color: #5d2e0f;
+    }
+    .dossier-card .dossier-id {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      color: #8b7355;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .dossier-card .dossier-titre {
+      font-size: 17px;
+      font-weight: bold;
+      color: #3e1f0a;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .dossier-card .dossier-meta {
+      font-size: 12px;
+      color: #8b7355;
+      margin-bottom: 10px;
+    }
+    .dossier-card .dossier-entrees {
+      font-size: 12px;
+      color: #6d5a3e;
+      border-top: 1px dashed #c4a882;
+      padding-top: 8px;
+      margin-top: 8px;
+    }
+
+    /* ─── Timeline Enquête ─── */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #a08050 0px,
+        #a08050 6px,
+        transparent 6px,
+        transparent 12px
+      );
+    }
+    .timeline-entry {
+      position: relative;
+      margin-bottom: 20px;
+      background: #faf3e0;
+      border: 1px solid #c4a882;
+      border-radius: 4px;
+      padding: 14px;
+      box-shadow: 1px 2px 6px rgba(62,31,10,0.1);
+    }
+    .timeline-entry::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 18px;
+      width: 10px;
+      height: 10px;
+      background: #5d2e0f;
+      border: 2px solid #f5e6c8;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px #a08050;
+    }
+    .timeline-entry .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .timeline-entry .entry-type {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .type-temoignage { background: #e3d5c0; color: #5d4037; border: 1px solid #b8956a; }
+    .type-indice     { background: #d4e6f1; color: #1a5276; border: 1px solid #7fb3d5; }
+    .type-suspect    { background: #f5b7b1; color: #7b241c; border: 1px solid #c0392b; }
+    .type-preuve     { background: #d5f5e3; color: #145a32; border: 1px solid #52be80; }
+    .type-rapport    { background: #d6eaf8; color: #1a5276; border: 1px solid #85c1e9; }
+    .type-note       { background: #f9e79f; color: #7d6608; border: 1px solid #d4ac0d; }
+    .timeline-entry .entry-date {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #8b7355;
+    }
+    .timeline-entry .entry-content {
+      color: #3e1f0a;
+      line-height: 1.6;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+    .timeline-entry .entry-auteur {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #8b7355;
+      font-style: italic;
+      text-align: right;
+    }
+
+    /* ─── Formulaire Nouvelle Entrée ─── */
+    .form-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+    .form-row .input-western { flex: 1; min-width: 140px; }
+    .form-row label {
+      font-size: 13px;
+      font-weight: bold;
+      color: #5d2e0f;
+      min-width: 80px;
+    }
+
+    /* ─── Connexion Admin ─── */
+    .admin-box {
+      background: #e8d5b5;
+      border: 2px solid #8b5a2b;
+      border-radius: 4px;
+      padding: 16px;
+      text-align: center;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .admin-box h3 {
+      margin: 0 0 12px;
+      color: #5d2e0f;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .admin-box input {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    .admin-badge {
+      display: inline-block;
+      background: #4a7c59;
+      color: #f5e6c8;
+      padding: 4px 12px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    /* ─── Navigation Retour ─── */
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #5d2e0f;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 12px;
+      padding: 4px 0;
+      border-bottom: 1px dashed transparent;
+      transition: border-color 0.2s;
+    }
+    .nav-back:hover {
+      border-bottom-color: #5d2e0f;
+    }
+
+    /* ─── Empty State ─── */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #8b7355;
+    }
+    .empty-state .empty-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+    .empty-state p {
+      font-style: italic;
+      font-size: 15px;
+    }
+
+    /* ─── Footer ─── */
+    .page-footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 11px;
+      color: #8b7355;
+      font-style: italic;
+      letter-spacing: 1px;
+    }
+
+    /* ─── Toolbar ─── */
+    .toolbar-top {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .toolbar-top .spacer {
+      flex: 1;
+    }
+
+    /* ─── Hidden ─── */
+    .hidden { display: none !important; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 600px) {
+      .header-band h1 { font-size: 22px; letter-spacing: 3px; }
+      .dossier-grid { grid-template-columns: 1fr; }
+      .timeline { padding-left: 20px; }
+      .timeline-entry::before { left: -18px; }
+    }
+  </style>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<base target="_blank">
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="header-band">
+    <h1>📜 Dossiers d'Enquête</h1>
+    <p class="subtitle">Bureau des Shérifs de Sunset — État du Texas</p>
+    <div class="star-badge">🔒 Confidentiel</div>
+  </div>
+
+  <div class="main-wrap">
+
+    <!-- ═══ VUE : LISTE DES ENQUÊTES ═══ -->
+    <div id="vue-liste">
+      <div class="paper-card">
+        <div class="toolbar-top">
+          <h2 style="margin:0; font-size:22px;">🗂️ Dossiers ouverts</h2>
+          <div class="spacer"></div>
+          <button class="btn btn-primary" onclick="showNouvelleEnquete()">➕ Nouvelle enquête</button>
+        </div>
+        <div class="divider"><span>Registre</span></div>
+        <div id="liste-enquetes" class="dossier-grid">
+          <!-- Rempli par JS -->
+        </div>
+        <div id="empty-enquetes" class="empty-state hidden">
+          <div class="empty-icon">📂</div>
+          <p>Aucun dossier d'enquête n'a été ouvert pour le moment.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ VUE : NOUVELLE ENQUÊTE ═══ -->
+    <div id="vue-nouvelle" class="hidden">
+      <div class="paper-card">
+        <div class="nav-back" onclick="showListe()">← Retour au registre</div>
+        <h2 style="margin:0 0 16px; font-size:22px;">📋 Ouvrir un nouveau dossier</h2>
+        <div class="divider"><span>Informations</span></div>
+        <div class="form-row">
+          <label>Titre :</label>
+          <input type="text" id="new-titre" class="input-western" placeholder="Ex: Disparition du bétail — Ranch Miller" style="flex:2;">
+        </div>
+        <div class="form-row">
+          <label>Date :</label>
+          <input type="date" id="new-date" class="input-western">
+          <label style="min-width:auto; margin-left:10px;">Statut :</label>
+          <select id="new-statut" class="input-western">
+            <option value="ouverte">Ouverte</option>
+            <option value="cours">En cours</option>
+            <option value="resolue">Résolue</option>
+            <option value="classee">Classée</option>
+          </select>
+        </div>
+        <div style="text-align:right; margin-top:16px;">
+          <button class="btn btn-ghost" onclick="showListe()">Annuler</button>
+          <button class="btn btn-primary" onclick="creerEnquete()">📁 Ouvrir le dossier</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ VUE : DÉTAIL ENQUÊTE ═══ -->
+    <div id="vue-detail" class="hidden">
+      <div class="paper-card" style="position:relative;">
+        <div id="detail-stamp" class="stamp-confidential hidden">Confidentiel</div>
+        <div class="nav-back" onclick="showListe()">← Retour au registre</div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
+          <div>
+            <div id="detail-id" style="font-family:'Courier New',monospace; font-size:11px; color:#8b7355; margin-bottom:4px;"></div>
+            <h2 id="detail-titre" style="margin:0; font-size:24px; color:#3e1f0a;"></h2>
+            <div id="detail-meta" style="margin-top:6px; font-size:13px; color:#8b7355;"></div>
+          </div>
+          <div id="detail-statut"></div>
+        </div>
+        <div class="divider"><span>Journal d'enquête</span></div>
+
+        <!-- Ajouter une entrée (visible si admin) -->
+        <div id="box-nouvelle-entree" class="hidden">
+          <div style="background:#e8d5b5; border:1px solid #b8956a; border-radius:4px; padding:14px; margin-bottom:20px;">
+            <h4 style="margin:0 0 10px; color:#5d2e0f; font-size:14px;">📝 Ajouter une entrée au dossier</h4>
+            <div class="form-row">
+              <input type="date" id="entree-date" class="input-western" style="min-width:120px;">
+              <input type="time" id="entree-heure" class="input-western" style="min-width:80px;">
+              <select id="entree-type" class="input-western" style="min-width:130px;">
+                <option value="temoignage">🗣️ Témoignage</option>
+                <option value="indice">🔍 Indice</option>
+                <option value="suspect">🎯 Suspect</option>
+                <option value="preuve">📎 Preuve</option>
+                <option value="rapport">📜 Rapport</option>
+                <option value="note">📝 Note</option>
+              </select>
+              <input type="text" id="entree-auteur" class="input-western" placeholder="Auteur (Shérif...)" style="min-width:140px;">
+            </div>
+            <textarea id="entree-contenu" class="input-western" placeholder="Rédigez ici le contenu de l'entrée..." style="width:100%;"></textarea>
+            <div style="text-align:right; margin-top:8px;">
+              <button class="btn btn-primary" onclick="ajouterEntree()">📌 Enregistrer l'entrée</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div id="detail-timeline" class="timeline">
+          <!-- Rempli par JS -->
+        </div>
+        <div id="empty-timeline" class="empty-state hidden">
+          <div class="empty-icon">📜</div>
+          <p>Aucune entrée n'a encore été ajoutée à ce dossier.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CONNEXION ADMIN ═══ -->
+    <div class="paper-card" style="max-width:420px; margin: 20px auto;">
+      <div id="admin-login">
+        <div class="admin-box">
+          <h3>🔐 Accès Administrateur</h3>
+          <p style="font-size:12px; color:#8b7355; margin-bottom:12px;">Connexion requise pour modifier les dossiers</p>
+          <input type="email" id="admin-email" class="input-western" placeholder="Adresse email">
+          <input type="password" id="admin-password" class="input-western" placeholder="Mot de passe">
+          <button class="btn btn-primary" style="width:100%; margin-top:4px;" onclick="loginAdmin()">Se connecter</button>
+        </div>
+      </div>
+      <div id="admin-connected" class="hidden" style="text-align:center;">
+        <div class="admin-badge">✅ Connecté en tant qu'administrateur</div>
+        <button class="btn btn-ghost btn-small" onclick="logoutAdmin()">Se déconnecter</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    « La justice du Far West ne pardonne pas — Bureau des Shérifs de Sunset »
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════
+    //  CONFIG SUPABASE
+    // ═══════════════════════════════════════
+    const SUPABASE_URL = "https://dzdnhnmwluznrxijkkzc.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_SLzbwvcRvPc4L1NOj_Yk8w_GvM-p8xa";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const SESSION_ID = "bureau-sunset-enquetes";
+    const STORAGE_KEY = 'bureau_sunset_enquetes_v1';
+
+    let appData = { enquetes: [] };
+    let currentEnqueteId = null;
+    let isAdmin = false;
+
+    // ═══════════════════════════════════════
+    //  AUTH ADMIN
+    // ═══════════════════════════════════════
+    async function loginAdmin() {
+      const email = document.getElementById('admin-email').value.trim();
+      const password = document.getElementById('admin-password').value;
+      if (!email || !password) { alert('Veuillez remplir les deux champs.'); return; }
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) { alert('Connexion refusée : ' + error.message); return; }
+      isAdmin = true;
+      updateAdminUI();
+      alert('Connexion administrateur réussie');
+    }
+
+    function logoutAdmin() {
+      isAdmin = false;
+      document.getElementById('admin-email').value = '';
+      document.getElementById('admin-password').value = '';
+      updateAdminUI();
+    }
+
+    function updateAdminUI() {
+      document.getElementById('admin-login').classList.toggle('hidden', isAdmin);
+      document.getElementById('admin-connected').classList.toggle('hidden', !isAdmin);
+      const box = document.getElementById('box-nouvelle-entree');
+      if (box) box.classList.toggle('hidden', !isAdmin);
+    }
+
+    // ═══════════════════════════════════════
+    //  DONNÉES
+    // ═══════════════════════════════════════
+    function getDefaultData() {
+      return { enquetes: [] };
+    }
+
+    async function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+      try {
+        const { error } = await supabaseClient
+          .from('bureau_data')
+          .upsert({ session_id: SESSION_ID, data: appData, updated_at: new Date().toISOString() }, { onConflict: 'session_id' });
+        if (error) throw error;
+      } catch (err) {
+        console.error('Erreur sync Supabase:', err);
+      }
+    }
+
+    async function loadData() {
+      try {
+        const { data, error } = await supabaseClient
+          .from('bureau_data')
+          .select('data')
+          .eq('session_id', SESSION_ID)
+          .maybeSingle();
+        if (error && error.code !== 'PGRST116') throw error;
+        if (data && data.data) {
+          appData = data.data;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+        } else {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) appData = JSON.parse(raw);
+        }
+      } catch (err) {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) appData = JSON.parse(raw);
+      }
+      if (!appData.enquetes) appData.enquetes = [];
+      renderListe();
+    }
+
+    // ═══════════════════════════════════════
+    //  NAVIGATION
+    // ═══════════════════════════════════════
+    function showListe() {
+      document.getElementById('vue-liste').classList.remove('hidden');
+      document.getElementById('vue-nouvelle').classList.add('hidden');
+      document.getElementById('vue-detail').classList.add('hidden');
+      currentEnqueteId = null;
+      renderListe();
+    }
+
+    function showNouvelleEnquete() {
+      if (!isAdmin) { alert('Connexion administrateur requise pour ouvrir un dossier.'); return; }
+      document.getElementById('vue-liste').classList.add('hidden');
+      document.getElementById('vue-nouvelle').classList.remove('hidden');
+      document.getElementById('vue-detail').classList.add('hidden');
+      document.getElementById('new-titre').value = '';
+      document.getElementById('new-date').value = new Date().toISOString().slice(0,10);
+      document.getElementById('new-statut').value = 'ouverte';
+    }
+
+    function showDetail(id) {
+      currentEnqueteId = id;
+      document.getElementById('vue-liste').classList.add('hidden');
+      document.getElementById('vue-nouvelle').classList.add('hidden');
+      document.getElementById('vue-detail').classList.remove('hidden');
+      renderDetail();
+    }
+
+    // ═══════════════════════════════════════
+    //  CRUD ENQUÊTES
+    // ═══════════════════════════════════════
+    function creerEnquete() {
+      const titre = document.getElementById('new-titre').value.trim();
+      const date = document.getElementById('new-date').value;
+      const statut = document.getElementById('new-statut').value;
+      if (!titre) { alert('Veuillez indiquer un titre pour le dossier.'); return; }
+      const id = 'ENQ-' + Date.now().toString(36).toUpperCase();
+      appData.enquetes.push({
+        id: id,
+        titre: titre,
+        date: date || new Date().toISOString().slice(0,10),
+        statut: statut,
+        entrees: []
+      });
+      saveData();
+      showDetail(id);
+    }
+
+    function supprimerEnquete(id, event) {
+      event.stopPropagation();
+      if (!isAdmin) { alert('Connexion administrateur requise.'); return; }
+      if (!confirm('🗑️ Supprimer définitivement ce dossier d\'enquête ?')) return;
+      appData.enquetes = appData.enquetes.filter(e => e.id !== id);
+      saveData();
+      renderListe();
+    }
+
+    function changerStatut(id, nouveauStatut) {
+      if (!isAdmin) { alert('Connexion administrateur requise.'); return; }
+      const enq = appData.enquetes.find(e => e.id === id);
+      if (enq) {
+        enq.statut = nouveauStatut;
+        saveData();
+        renderDetail();
+        renderListe();
+      }
+    }
+
+    // ═══════════════════════════════════════
+    //  ENTRÉES (TIMELINE)
+    // ═══════════════════════════════════════
+    function ajouterEntree() {
+      if (!isAdmin) return;
+      const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
+      if (!enq) return;
+      const date = document.getElementById('entree-date').value;
+      const heure = document.getElementById('entree-heure').value;
+      const type = document.getElementById('entree-type').value;
+      const auteur = document.getElementById('entree-auteur').value.trim();
+      const contenu = document.getElementById('entree-contenu').value.trim();
+      if (!contenu) { alert('Veuillez rédiger le contenu de l\'entrée.'); return; }
+      enq.entrees.push({
+        id: 'ENT-' + Date.now().toString(36).toUpperCase(),
+        date: date || new Date().toISOString().slice(0,10),
+        heure: heure || new Date().toTimeString().slice(0,5),
+        type: type,
+        auteur: auteur || 'Anonyme',
+        contenu: contenu
+      });
+      // Reset form
+      document.getElementById('entree-contenu').value = '';
+      document.getElementById('entree-heure').value = '';
+      document.getElementById('entree-auteur').value = '';
+      saveData();
+      renderDetail();
+    }
+
+    function supprimerEntree(index) {
+      if (!isAdmin) return;
+      if (!confirm('Supprimer cette entrée ?')) return;
+      const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
+      if (enq) {
+        enq.entrees.splice(index, 1);
+        saveData();
+        renderDetail();
+      }
+    }
+
+    // ═══════════════════════════════════════
+    //  RENDU
+    // ═══════════════════════════════════════
+    function renderListe() {
+      const container = document.getElementById('liste-enquetes');
+      const empty = document.getElementById('empty-enquetes');
+      container.innerHTML = '';
+      if (!appData.enquetes.length) {
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+      // Tri : les plus récentes d'abord
+      const sorted = [...appData.enquetes].sort((a,b) => new Date(b.date) - new Date(a.date));
+      sorted.forEach(enq => {
+        const card = document.createElement('div');
+        card.className = 'dossier-card';
+        card.onclick = () => showDetail(enq.id);
+        const badgeClass = {
+          ouverte: 'badge-ouverte',
+          cours: 'badge-cours',
+          resolue: 'badge-resolue',
+          classee: 'badge-classée'
+        }[enq.statut] || 'badge-ouverte';
+        const badgeText = {
+          ouverte: 'Ouverte',
+          cours: 'En cours',
+          resolue: 'Résolue',
+          classee: 'Classée'
+        }[enq.statut] || 'Ouverte';
+        card.innerHTML = `
+          <div class="dossier-id">📁 ${escapeHtml(enq.id)}</div>
+          <div class="dossier-titre">${escapeHtml(enq.titre)}</div>
+          <div class="dossier-meta">
+            <span class="badge ${badgeClass}">${badgeText}</span>
+            <span style="margin-left:8px;">📅 ${formatDate(enq.date)}</span>
+          </div>
+          <div class="dossier-entrees">
+            📝 ${enq.entrees.length} entrée${enq.entrees.length > 1 ? 's' : ''}
+            ${isAdmin ? '<button class="btn btn-danger btn-small" style="float:right; margin-top:-4px;" onclick="supprimerEnquete(\'' + enq.id + '\', event)">🗑️</button>' : ''}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderDetail() {
+      const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
+      if (!enq) { showListe(); return; }
+
+      document.getElementById('detail-id').textContent = 'DOSSIER N° ' + enq.id;
+      document.getElementById('detail-titre').textContent = enq.titre;
+      document.getElementById('detail-meta').innerHTML = `Date d'ouverture : <b>${formatDate(enq.date)}</b>`;
+
+      const badgeClass = {
+        ouverte: 'badge-ouverte',
+        cours: 'badge-cours',
+        resolue: 'badge-resolue',
+        classee: 'badge-classée'
+      }[enq.statut] || 'badge-ouverte';
+      const badgeText = {
+        ouverte: 'Ouverte',
+        cours: 'En cours',
+        resolue: 'Résolue',
+        classee: 'Classée'
+      }[enq.statut] || 'Ouverte';
+
+      let statutHTML = `<span class="badge ${badgeClass}">${badgeText}</span>`;
+      if (isAdmin) {
+        statutHTML += `
+          <select class="input-western" style="margin-left:8px; padding:4px 8px; font-size:12px;" onchange="changerStatut('${enq.id}', this.value)">
+            <option value="ouverte" ${enq.statut==='ouverte'?'selected':''}>→ Ouverte</option>
+            <option value="cours" ${enq.statut==='cours'?'selected':''}>→ En cours</option>
+            <option value="resolue" ${enq.statut==='resolue'?'selected':''}>→ Résolue</option>
+            <option value="classee" ${enq.statut==='classee'?'selected':''}>→ Classée</option>
+          </select>
+        `;
+      }
+      document.getElementById('detail-statut').innerHTML = statutHTML;
+
+      // Stamp confidentiel si pas résolue
+      const stamp = document.getElementById('detail-stamp');
+      if (enq.statut !== 'resolue' && enq.statut !== 'classee') {
+        stamp.classList.remove('hidden');
+      } else {
+        stamp.classList.add('hidden');
+      }
+
+      // Timeline
+      const timeline = document.getElementById('detail-timeline');
+      const emptyTimeline = document.getElementById('empty-timeline');
+      timeline.innerHTML = '';
+      if (!enq.entrees || !enq.entrees.length) {
+        emptyTimeline.classList.remove('hidden');
+      } else {
+        emptyTimeline.classList.add('hidden');
+        // Tri chronologique
+        const sorted = [...enq.entrees].sort((a,b) => {
+          const da = new Date(a.date + 'T' + (a.heure||'00:00'));
+          const db = new Date(b.date + 'T' + (b.heure||'00:00'));
+          return da - db;
+        });
+        sorted.forEach((ent, idx) => {
+          const typeLabels = {
+            temoignage: 'Témoignage',
+            indice: 'Indice',
+            suspect: 'Suspect',
+            preuve: 'Preuve',
+            rapport: 'Rapport',
+            note: 'Note'
+          };
+          const typeClass = 'type-' + ent.type;
+          const div = document.createElement('div');
+          div.className = 'timeline-entry';
+          div.innerHTML = `
+            <div class="entry-header">
+              <span class="entry-type ${typeClass}">${typeLabels[ent.type] || ent.type}</span>
+              <span class="entry-date">📅 ${formatDate(ent.date)} ${ent.heure ? '— 🕐 ' + ent.heure : ''}</span>
+            </div>
+            <div class="entry-content">${escapeHtml(ent.contenu)}</div>
+            <div class="entry-auteur">✍️ Rédigé par ${escapeHtml(ent.auteur)}</div>
+            ${isAdmin ? '<div style="text-align:right; margin-top:6px;"><button class="btn btn-danger btn-small" onclick="supprimerEntree(' + idx + ')">🗑️ Supprimer</button></div>' : ''}
+          `;
+          timeline.appendChild(div);
+        });
+      }
+
+      // Pré-remplir le formulaire d'entrée
+      document.getElementById('entree-date').value = new Date().toISOString().slice(0,10);
+      document.getElementById('entree-heure').value = new Date().toTimeString().slice(0,5);
+      updateAdminUI();
+    }
+
+    // ═══════════════════════════════════════
+    //  UTILITAIRES
+    // ═══════════════════════════════════════
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '—';
+      const d = new Date(dateStr + 'T00:00:00');
+      if (isNaN(d)) return dateStr;
+      return d.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+    }
+
+    // ═══════════════════════════════════════
+    //  INIT
+    // ═══════════════════════════════════════
+    window.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      updateAdminUI();
+    });
+  </script>
+</body>
+</html>
