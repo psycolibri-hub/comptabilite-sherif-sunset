@@ -630,6 +630,8 @@
         updateSyncStatus('⚠️ Mode hors ligne','orange');
       }
       if (!appData.armes) appData.armes = [];
+      if (!appData.revenus) appData.revenus = [];
+      delete appData.budgetGlobal;
       renderAll();
     }
 
@@ -838,6 +840,7 @@
       calcMasseSalariale();
       calcTotalDepenses();
       calcTotalStock();
+      calcTotalRevenus();
       syncBudget();
     }
 
@@ -1046,6 +1049,7 @@
       calcMasseSalariale();
       calcTotalDepenses();
       calcTotalStock();
+      calcTotalRevenus();
       syncBudget();
     }
 
