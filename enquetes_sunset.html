@@ -1078,7 +1078,6 @@
     }
 
     function supprimerPersonne(persIndex) {
-      if (!isAdmin) { alert('Connexion administrateur requise.'); return; }
       if (!confirm('Supprimer cette personne du dossier ?')) return;
       const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
       if (enq) { enq.personnes.splice(persIndex, 1); saveData(); renderDetail(); }
@@ -1279,7 +1278,7 @@
                 <span>
                   <span class="personne-role role-${pers.role}">${roleLabels[pers.role] || pers.role}</span>
                   <button class="btn btn-edit btn-small" style="margin-left:6px;" onclick="editerPersonne(${pIdx})">✏️ Modifier</button>
-                  ${isAdmin ? `<button class="btn btn-danger btn-small" style="margin-left:6px;" onclick="supprimerPersonne(${pIdx})">🗑️</button>` : ''}
+                  <button class="btn btn-danger btn-small" style="margin-left:6px;" onclick="supprimerPersonne(${pIdx})">🗑️</button>
                 </span>
               </div>
               ${photosHTML}
