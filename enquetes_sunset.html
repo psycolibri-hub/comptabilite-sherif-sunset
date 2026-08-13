@@ -1025,7 +1025,6 @@
       renderDetail();
     }
     function supprimerEntree(index) {
-      if (!isAdmin) { alert('Connexion administrateur requise.'); return; }
       if (!confirm('Supprimer cette entrée ?')) return;
       const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
       if (enq) { enq.entrees.splice(index, 1); saveData(); renderDetail(); }
@@ -1086,7 +1085,6 @@
     }
 
     function supprimerPhoto(persIndex, photoIndex) {
-      if (!isAdmin) { alert('Connexion administrateur requise.'); return; }
       if (!confirm('Supprimer cette photo ?')) return;
       const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
       if (enq && enq.personnes[persIndex]) {
@@ -1219,7 +1217,7 @@
               <div class="entry-auteur">✍️ Rédigé par ${escapeHtml(ent.auteur)}</div>
               <div style="text-align:right; margin-top:6px;">
                 <button class="btn btn-edit btn-small" onclick="editerEntree(${idx})">✏️ Modifier</button>
-                ${isAdmin ? '<button class="btn btn-danger btn-small" style="margin-left:6px;" onclick="supprimerEntree(' + idx + ')">🗑️ Supprimer</button>' : ''}
+                <button class="btn btn-danger btn-small" style="margin-left:6px;" onclick="supprimerEntree(${idx})">🗑️ Supprimer</button>
               </div>
             `;
           }
@@ -1269,7 +1267,7 @@
                 photosHTML += `
                   <div class="photo-wrap">
                     <img src="${photo}" class="photo-thumb" onclick="openLightbox('${photo}')" alt="Photo ${pers.nom}">
-                    ${isAdmin ? `<button class="btn-delete-photo" onclick="supprimerPhoto(${pIdx}, ${phIdx})">×</button>` : ''}
+                    <button class="btn-delete-photo" onclick="supprimerPhoto(${pIdx}, ${phIdx})">×</button>
                   </div>
                 `;
               });
