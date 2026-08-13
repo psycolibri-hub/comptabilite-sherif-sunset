@@ -58,6 +58,44 @@
     padding: 48px 20px 32px;
   }
 
+  .music-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--wood-medium);
+    border: 2px solid var(--gold);
+    border-radius: 4px;
+    color: var(--parchment);
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+  .music-btn:hover {
+    background: var(--wood-dark);
+    box-shadow: 0 0 12px rgba(201, 162, 39, 0.3);
+  }
+  .music-btn.playing {
+    background: var(--rust);
+    border-color: var(--gold-light);
+    animation: pulse-gold 2s infinite;
+  }
+  @keyframes pulse-gold {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(201, 162, 39, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(201, 162, 39, 0); }
+  }
+  .music-note {
+    font-size: 14px;
+  }
+
   .badge-container {
     position: relative;
     width: 140px;
@@ -292,7 +330,7 @@
 
   <main>
     <div class="nav-grid">
-      <a href="codepenal.html" class="nav-card">
+      <a href="codepenal.html" class="nav-card" target="_blank">
         <svg class="icon" viewBox="0 0 24 24">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
           <polyline points="14 2 14 8 20 8"/>
@@ -304,7 +342,7 @@
         <p>Les lois de la ville de Sunset, article par article.</p>
       </a>
 
-      <a href="effectifs.html" class="nav-card">
+      <a href="effectifs.html" class="nav-card" target="_blank">
         <svg class="icon" viewBox="0 0 24 24">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
           <circle cx="12" cy="7" r="4"/>
@@ -314,7 +352,7 @@
         <p>Les hommes et femmes en charge de l'ordre à Sunset.</p>
       </a>
 
-      <a href="bureau_sheriffs_sunset.html" class="nav-card">
+      <a href="bureau_sheriffs_sunset.html" class="nav-card" target="_blank">
         <svg class="icon" viewBox="0 0 24 24">
           <line x1="12" y1="1" x2="12" y2="23"/>
           <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
@@ -323,7 +361,7 @@
         <p>Les amendes, récompenses et finances du bureau.</p>
       </a>
 
-      <a href="enquetes_sunset.html" class="nav-card">
+      <a href="enquetes_sunset.html" class="nav-card" target="_blank">
         <svg class="icon" viewBox="0 0 24 24">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
           <polyline points="14 2 14 8 20 8"/>
@@ -344,5 +382,26 @@
 
   <div class="wood-border-bottom"></div>
 
+  <audio id="bg-music" loop>
+    <source src="musique.mp3" type="audio/mpeg">
+    Votre navigateur ne supporte pas la lecture audio.
+  </audio>
+
+  <script>
+    const bgMusic = document.getElementById('bg-music');
+    let musicStarted = false;
+
+    function startMusic() {
+      if (musicStarted) return;
+      bgMusic.play().then(() => {
+        musicStarted = true;
+      }).catch(err => {
+        console.log('Autoplay bloqué par le navigateur');
+      });
+    }
+
+    // Démarre la musique au premier clic n'importe où sur la page
+    document.addEventListener('click', startMusic, { once: true });
+  </script>
 </body>
 </html>
