@@ -946,6 +946,9 @@
       document.getElementById('vue-nouvelle').classList.add('hidden');
       document.getElementById('vue-detail').classList.add('hidden');
       currentEnqueteId = null;
+      editingDate = false;
+      editingEntryIndex = null;
+      editingPersonneIndex = null;
       renderListe();
     }
     function showNouvelleEnquete() {
@@ -953,7 +956,7 @@
       document.getElementById('vue-nouvelle').classList.remove('hidden');
       document.getElementById('vue-detail').classList.add('hidden');
       document.getElementById('new-titre').value = '';
-      document.getElementById('new-date').value = new Date().toISOString().slice(0,10);
+      document.getElementById('new-date').value = '1904-01-01';
       document.getElementById('new-statut').value = 'ouverte';
     }
     function showDetail(id) {
@@ -1143,7 +1146,20 @@
 
       document.getElementById('detail-id').textContent = 'DOSSIER N° ' + enq.id;
       document.getElementById('detail-titre').textContent = enq.titre;
-      document.getElementById('detail-meta').innerHTML = `Date d'ouverture : <b>${formatDate(enq.date)}</b>`;
+      let dateHTML = `Date d'ouverture : <b>${formatDate(enq.date)}</b>`;
+      if (editingDate) {
+        dateHTML = `
+          <div class="edit-form-row" style="margin-top:4px;">
+            <label style="min-width:auto; font-size:13px;">Date d'ouverture :</label>
+            <input type="date" id="edit-date-ouverture" class="input-western" value="${enq.date}" style="min-width:140px;">
+            <button class="btn btn-save btn-small" onclick="sauverDateOuverture()">💾</button>
+            <button class="btn btn-cancel btn-small" onclick="annulerEditDate()">❌</button>
+          </div>
+        `;
+      } else {
+        dateHTML += ` <button class="btn btn-edit btn-small" onclick="editerDateOuverture()">✏️</button>`;
+      }
+      document.getElementById('detail-meta').innerHTML = dateHTML;
 
       const badgeClass = { ouverte:'badge-ouverte', cours:'badge-cours', resolue:'badge-resolue', classee:'badge-classée' }[enq.statut] || 'badge-ouverte';
       const badgeText = { ouverte:'Ouverte', cours:'En cours', resolue:'Résolue', classee:'Classée' }[enq.statut] || 'Ouverte';
@@ -1295,7 +1311,7 @@
       }
 
       // Pré-remplir formulaires
-      document.getElementById('entree-date').value = new Date().toISOString().slice(0,10);
+      document.getElementById('entree-date').value = '1904-01-01';
       document.getElementById('entree-heure').value = new Date().toTimeString().slice(0,5);
       updateAdminUI();
     }
@@ -1354,6 +1370,7 @@
     // ═══════════════════════════════════════
     //  ÉDITION PERSONNES
     // ═══════════════════════════════════════
+    let editingDate = false;
     let editingPersonneIndex = null;
 
     function editerPersonne(index) {
@@ -1363,6 +1380,27 @@
 
     function annulerEditPersonne() {
       editingPersonneIndex = null;
+      renderDetail();
+    }
+
+    function editerDateOuverture() {
+      editingDate = true;
+      renderDetail();
+    }
+
+    function annulerEditDate() {
+      editingDate = false;
+      renderDetail();
+    }
+
+    function sauverDateOuverture() {
+      const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
+      if (!enq) return;
+      const nouvelleDate = document.getElementById('edit-date-ouverture').value;
+      if (!nouvelleDate) { alert('Veuillez sélectionner une date.'); return; }
+      enq.date = nouvelleDate;
+      editingDate = false;
+      saveData();
       renderDetail();
     }
 
