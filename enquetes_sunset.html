@@ -550,6 +550,71 @@
       opacity: 1;
     }
 
+    /* ═══ MODE ÉDITION INLINE ═══ */
+    .edit-mode {
+      background: #fff8e1 !important;
+      border: 2px dashed #8b5a2b !important;
+    }
+    .edit-form-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+    .edit-form-row .input-western {
+      flex: 1;
+      min-width: 100px;
+      padding: 5px 8px;
+      font-size: 13px;
+    }
+    .edit-form-row textarea.input-western {
+      width: 100%;
+      min-height: 60px;
+    }
+    .edit-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+    .btn-save {
+      background: #4a7c59;
+      color: #f5e6c8;
+      border-color: #2d5a3a;
+    }
+    .btn-save:hover {
+      background: #2d5a3a;
+    }
+    .btn-cancel {
+      background: #8b7355;
+      color: #f5e6c8;
+      border-color: #5d4037;
+    }
+    .btn-cancel:hover {
+      background: #5d4037;
+    }
+    .btn-edit {
+      background: #6d4c41;
+      color: #f5e6c8;
+      border-color: #3e2723;
+    }
+    .btn-edit:hover {
+      background: #3e2723;
+    }
+    .add-photo-existing {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .add-photo-existing .file-btn {
+      padding: 4px 10px;
+      font-size: 12px;
+    }
+    .add-photo-existing .preview-zone {
+      margin-top: 6px;
+    }
+
     .form-ajout-personne {
       background: #e8d5b5;
       border: 1.5px dashed #a08050;
@@ -1119,15 +1184,45 @@
           const typeLabels = { temoignage:'Témoignage', indice:'Indice', suspect:'Suspect', preuve:'Preuve', rapport:'Rapport', note:'Note' };
           const div = document.createElement('div');
           div.className = 'timeline-entry';
-          div.innerHTML = `
-            <div class="entry-header">
-              <span class="entry-type type-${ent.type}">${typeLabels[ent.type] || ent.type}</span>
-              <span class="entry-date">📅 ${formatDate(ent.date)} ${ent.heure ? '— 🕐 ' + ent.heure : ''}</span>
-            </div>
-            <div class="entry-content">${escapeHtml(ent.contenu)}</div>
-            <div class="entry-auteur">✍️ Rédigé par ${escapeHtml(ent.auteur)}</div>
-            ${isAdmin ? '<div style="text-align:right; margin-top:6px;"><button class="btn btn-danger btn-small" onclick="supprimerEntree(' + idx + ')">🗑️ Supprimer</button></div>' : ''}
-          `;
+
+          if (editingEntryIndex === idx) {
+            // Mode édition
+            div.classList.add('edit-mode');
+            div.innerHTML = `
+              <div class="edit-form-row">
+                <input type="date" id="edit-date" class="input-western" value="${ent.date}" style="min-width:120px;">
+                <input type="time" id="edit-heure" class="input-western" value="${ent.heure || ''}" style="min-width:80px;">
+                <select id="edit-type" class="input-western" style="min-width:130px;">
+                  <option value="temoignage" ${ent.type==='temoignage'?'selected':''}>🗣️ Témoignage</option>
+                  <option value="indice" ${ent.type==='indice'?'selected':''}>🔍 Indice</option>
+                  <option value="suspect" ${ent.type==='suspect'?'selected':''}>🎯 Suspect</option>
+                  <option value="preuve" ${ent.type==='preuve'?'selected':''}>📎 Preuve</option>
+                  <option value="rapport" ${ent.type==='rapport'?'selected':''}>📜 Rapport</option>
+                  <option value="note" ${ent.type==='note'?'selected':''}>📝 Note</option>
+                </select>
+                <input type="text" id="edit-auteur" class="input-western" value="${escapeHtml(ent.auteur)}" placeholder="Auteur" style="min-width:140px;">
+              </div>
+              <textarea id="edit-contenu" class="input-western" placeholder="Contenu..." style="width:100%;">${escapeHtml(ent.contenu)}</textarea>
+              <div class="edit-actions">
+                <button class="btn btn-cancel btn-small" onclick="annulerEditEntree()">❌ Annuler</button>
+                <button class="btn btn-save btn-small" onclick="sauverEntree(${idx})">💾 Sauvegarder</button>
+              </div>
+            `;
+          } else {
+            // Mode lecture
+            div.innerHTML = `
+              <div class="entry-header">
+                <span class="entry-type type-${ent.type}">${typeLabels[ent.type] || ent.type}</span>
+                <span class="entry-date">📅 ${formatDate(ent.date)} ${ent.heure ? '— 🕐 ' + ent.heure : ''}</span>
+              </div>
+              <div class="entry-content">${escapeHtml(ent.contenu)}</div>
+              <div class="entry-auteur">✍️ Rédigé par ${escapeHtml(ent.auteur)}</div>
+              <div style="text-align:right; margin-top:6px;">
+                <button class="btn btn-edit btn-small" onclick="editerEntree(${idx})">✏️ Modifier</button>
+                ${isAdmin ? '<button class="btn btn-danger btn-small" style="margin-left:6px;" onclick="supprimerEntree(' + idx + ')">🗑️ Supprimer</button>' : ''}
+              </div>
+            `;
+          }
           timeline.appendChild(div);
         });
       }
@@ -1145,29 +1240,59 @@
           const roleLabels = { suspect:'Suspect', temoin:'Témoin', victime:'Victime', officier:'Officier', inconnu:'Inconnu' };
           const card = document.createElement('div');
           card.className = 'personne-card';
-          let photosHTML = '';
-          if (pers.photos && pers.photos.length) {
-            photosHTML = '<div class="photo-gallery">';
-            pers.photos.forEach((photo, phIdx) => {
-              photosHTML += `
-                <div class="photo-wrap">
-                  <img src="${photo}" class="photo-thumb" onclick="openLightbox('${photo}')" alt="Photo ${pers.nom}">
-                  ${isAdmin ? `<button class="btn-delete-photo" onclick="supprimerPhoto(${pIdx}, ${phIdx})">×</button>` : ''}
+
+          if (editingPersonneIndex === pIdx) {
+            // Mode édition personne
+            card.classList.add('edit-mode');
+            card.innerHTML = `
+              <div class="edit-form-row">
+                <input type="text" id="edit-pers-nom" class="input-western" value="${escapeHtml(pers.nom)}" placeholder="Nom et prénom" style="flex:2;">
+                <select id="edit-pers-role" class="input-western" style="min-width:130px;">
+                  <option value="suspect" ${pers.role==='suspect'?'selected':''}>🎯 Suspect</option>
+                  <option value="temoin" ${pers.role==='temoin'?'selected':''}>🗣️ Témoin</option>
+                  <option value="victime" ${pers.role==='victime'?'selected':''}>💔 Victime</option>
+                  <option value="officier" ${pers.role==='officier'?'selected':''}>👮 Officier</option>
+                  <option value="inconnu" ${pers.role==='inconnu'?'selected':''}>❓ Inconnu</option>
+                </select>
+              </div>
+              <div class="edit-actions">
+                <button class="btn btn-cancel btn-small" onclick="annulerEditPersonne()">❌ Annuler</button>
+                <button class="btn btn-save btn-small" onclick="sauverPersonne(${pIdx})">💾 Sauvegarder</button>
+              </div>
+            `;
+          } else {
+            // Mode lecture
+            let photosHTML = '';
+            if (pers.photos && pers.photos.length) {
+              photosHTML = '<div class="photo-gallery">';
+              pers.photos.forEach((photo, phIdx) => {
+                photosHTML += `
+                  <div class="photo-wrap">
+                    <img src="${photo}" class="photo-thumb" onclick="openLightbox('${photo}')" alt="Photo ${pers.nom}">
+                    ${isAdmin ? `<button class="btn-delete-photo" onclick="supprimerPhoto(${pIdx}, ${phIdx})">×</button>` : ''}
+                  </div>
+                `;
+              });
+              photosHTML += '</div>';
+            }
+            card.innerHTML = `
+              <div class="personne-header">
+                <span class="personne-nom">👤 ${escapeHtml(pers.nom)}</span>
+                <span>
+                  <span class="personne-role role-${pers.role}">${roleLabels[pers.role] || pers.role}</span>
+                  <button class="btn btn-edit btn-small" style="margin-left:6px;" onclick="editerPersonne(${pIdx})">✏️ Modifier</button>
+                  ${isAdmin ? `<button class="btn btn-danger btn-small" style="margin-left:6px;" onclick="supprimerPersonne(${pIdx})">🗑️</button>` : ''}
+                </span>
+              </div>
+              ${photosHTML}
+              <div class="add-photo-existing">
+                <div class="file-input-wrap">
+                  <button class="file-btn">📷 Ajouter des photos</button>
+                  <input type="file" accept="image/*" multiple onchange="ajouterPhotosPersonne(${pIdx}, this)">
                 </div>
-              `;
-            });
-            photosHTML += '</div>';
+              </div>
+            `;
           }
-          card.innerHTML = `
-            <div class="personne-header">
-              <span class="personne-nom">👤 ${escapeHtml(pers.nom)}</span>
-              <span>
-                <span class="personne-role role-${pers.role}">${roleLabels[pers.role] || pers.role}</span>
-                ${isAdmin ? `<button class="btn btn-danger btn-small" style="margin-left:8px;" onclick="supprimerPersonne(${pIdx})">🗑️</button>` : ''}
-              </span>
-            </div>
-            ${photosHTML}
-          `;
           persContainer.appendChild(card);
         });
       }
@@ -1190,6 +1315,93 @@
       const d = new Date(dateStr + 'T00:00:00');
       if (isNaN(d)) return dateStr;
       return d.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+    }
+
+    // ═══════════════════════════════════════
+    //  ÉDITION ENTRÉES
+    // ═══════════════════════════════════════
+    let editingEntryIndex = null;
+
+    function editerEntree(index) {
+      editingEntryIndex = index;
+      renderDetail();
+    }
+
+    function annulerEditEntree() {
+      editingEntryIndex = null;
+      renderDetail();
+    }
+
+    function sauverEntree(index) {
+      const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
+      if (!enq || !enq.entrees[index]) return;
+      const date = document.getElementById('edit-date').value;
+      const heure = document.getElementById('edit-heure').value;
+      const type = document.getElementById('edit-type').value;
+      const auteur = document.getElementById('edit-auteur').value.trim();
+      const contenu = document.getElementById('edit-contenu').value.trim();
+      if (!contenu) { alert('Le contenu ne peut pas être vide.'); return; }
+      enq.entrees[index] = {
+        ...enq.entrees[index],
+        date: date || enq.entrees[index].date,
+        heure: heure,
+        type: type,
+        auteur: auteur || 'Anonyme',
+        contenu: contenu
+      };
+      editingEntryIndex = null;
+      saveData();
+      renderDetail();
+    }
+
+    // ═══════════════════════════════════════
+    //  ÉDITION PERSONNES
+    // ═══════════════════════════════════════
+    let editingPersonneIndex = null;
+
+    function editerPersonne(index) {
+      editingPersonneIndex = index;
+      renderDetail();
+    }
+
+    function annulerEditPersonne() {
+      editingPersonneIndex = null;
+      renderDetail();
+    }
+
+    function sauverPersonne(index) {
+      const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
+      if (!enq || !enq.personnes[index]) return;
+      const nom = document.getElementById('edit-pers-nom').value.trim();
+      const role = document.getElementById('edit-pers-role').value;
+      if (!nom) { alert('Le nom ne peut pas être vide.'); return; }
+      enq.personnes[index].nom = nom;
+      enq.personnes[index].role = role;
+      editingPersonneIndex = null;
+      saveData();
+      renderDetail();
+    }
+
+    function ajouterPhotosPersonne(persIndex, input) {
+      const enq = appData.enquetes.find(e => e.id === currentEnqueteId);
+      if (!enq || !enq.personnes[persIndex]) return;
+      if (!input.files || !input.files.length) return;
+      let loaded = 0;
+      const total = input.files.length;
+      Array.from(input.files).forEach(file => {
+        if (!file.type.startsWith('image/')) { loaded++; return; }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          enq.personnes[persIndex].photos.push(e.target.result);
+          loaded++;
+          if (loaded >= total) {
+            saveData();
+            renderDetail();
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+      input.value = '';
     }
 
     // ═══════════════════════════════════════
