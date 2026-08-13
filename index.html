@@ -98,48 +98,80 @@
 
   .volume-wrap {
     position: absolute;
-    top: 16px;
+    top: 12px;
     right: 16px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(61, 43, 31, 0.7);
-    border: 1.5px solid var(--gold);
-    border-radius: 4px;
-    padding: 6px 12px;
+    gap: 10px;
+    background: linear-gradient(180deg, var(--wood-dark) 0%, var(--wood-medium) 100%);
+    border: 2px solid var(--gold);
+    border-radius: 8px;
+    padding: 10px 18px;
     z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+    transition: all 0.3s ease;
+  }
+  .volume-wrap:hover {
+    box-shadow: 0 6px 20px rgba(201, 162, 39, 0.25), inset 0 1px 0 rgba(255,255,255,0.12);
+    transform: translateY(-1px);
   }
   .volume-wrap .vol-icon {
-    font-size: 14px;
-    color: var(--parchment);
+    font-size: 22px;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+    transition: transform 0.2s ease;
+  }
+  .volume-wrap:hover .vol-icon {
+    transform: scale(1.15);
+  }
+  .volume-wrap .vol-label {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
   }
   .volume-wrap input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
-    width: 80px;
-    height: 4px;
-    background: var(--wood-light);
-    border-radius: 2px;
+    width: 120px;
+    height: 8px;
+    background: linear-gradient(90deg, var(--wood-dark) 0%, var(--wood-light) 100%);
+    border-radius: 4px;
     outline: none;
     cursor: pointer;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
   }
   .volume-wrap input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 14px;
-    height: 14px;
-    background: var(--gold);
-    border: 2px solid var(--wood-dark);
+    width: 22px;
+    height: 22px;
+    background: radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold));
+    border: 3px solid var(--wood-dark);
     border-radius: 50%;
     cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4), 0 0 0 2px rgba(201, 162, 39, 0.2);
+    transition: all 0.2s ease;
+  }
+  .volume-wrap input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 2px 8px rgba(201, 162, 39, 0.5), 0 0 0 4px rgba(201, 162, 39, 0.15);
   }
   .volume-wrap input[type="range"]::-moz-range-thumb {
-    width: 14px;
-    height: 14px;
-    background: var(--gold);
-    border: 2px solid var(--wood-dark);
+    width: 22px;
+    height: 22px;
+    background: radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold));
+    border: 3px solid var(--wood-dark);
     border-radius: 50%;
     cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+  .volume-wrap input[type="range"]::-moz-range-track {
+    height: 8px;
+    background: linear-gradient(90deg, var(--wood-dark) 0%, var(--wood-light) 100%);
+    border-radius: 4px;
   }
 
   .badge-container {
@@ -344,6 +376,7 @@
   <header>
     <div class="volume-wrap" id="volume-box" style="display:none;">
       <span class="vol-icon" id="vol-icon">🔊</span>
+      <span class="vol-label">Volume</span>
       <input type="range" id="vol-slider" min="0" max="100" value="40" oninput="setVolume(this.value)">
     </div>
 
