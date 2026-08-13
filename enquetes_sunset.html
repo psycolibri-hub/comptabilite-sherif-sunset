@@ -722,7 +722,6 @@
     }
 
     function showNouvelleEnquete() {
-      if (!isAdmin) { alert('Connexion administrateur requise pour ouvrir un dossier.'); return; }
       document.getElementById('vue-liste').classList.add('hidden');
       document.getElementById('vue-nouvelle').classList.remove('hidden');
       document.getElementById('vue-detail').classList.add('hidden');
