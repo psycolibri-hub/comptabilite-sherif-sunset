@@ -245,7 +245,6 @@
       font-size: 12px;
       font-weight: bold;
     }
-    /* Styles spécifiques inventaire armes */
     .arme-form {
       display: flex;
       gap: 8px;
@@ -312,11 +311,11 @@
     </div>
 
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('salaires')">💰 Salaires</button>
-      <button class="tab-btn" onclick="switchTab('depenses')">📜 Dépenses</button>
-      <button class="tab-btn" onclick="switchTab('stock')">📦 Stock</button>
-      <button class="tab-btn" onclick="switchTab('armes')">🔫 Armement</button>
-      <button class="tab-btn" onclick="switchTab('bureau')">🏛️ Bureau</button>
+      <button class="tab-btn active" onclick="switchTab(this,'salaires')">💰 Salaires</button>
+      <button class="tab-btn" onclick="switchTab(this,'depenses')">📜 Dépenses</button>
+      <button class="tab-btn" onclick="switchTab(this,'stock')">📦 Stock</button>
+      <button class="tab-btn" onclick="switchTab(this,'armes')">🔫 Armement</button>
+      <button class="tab-btn" onclick="switchTab(this,'bureau')">🏛️ Bureau</button>
     </div>
 
     <div id="panel-salaires" class="panel active">
@@ -377,7 +376,6 @@
       <div class="section-header">
         <h2>📦 Inventaire</h2>
       </div>
-
       <div class="stock-section">
         <div class="section-header">
           <h3>🏛️ Inventaire du Bureau</h3>
@@ -399,7 +397,6 @@
           </table>
         </div>
       </div>
-
       <div class="stock-section">
         <div class="section-header">
           <h3>⚖️ Inventaire des Saisies</h3>
@@ -423,12 +420,10 @@
       </div>
     </div>
 
-    <!-- === NOUVEL ONGLET : INVENTAIRE DES ARMES === -->
     <div id="panel-armes" class="panel">
       <div class="section-header">
         <h2>🔫 Inventaire des armes du bureau</h2>
       </div>
-
       <form id="form-armes" class="arme-form" onsubmit="return false;">
         <input type="text" id="arme-nom" placeholder="Nom de l'arme (ex: Revolver Cattleman)" required>
         <select id="arme-loc" required onchange="toggleSheriffNom()">
@@ -440,22 +435,16 @@
         <input type="text" id="arme-serial" placeholder="Numéro de série" required style="font-family:'Courier New',monospace; min-width:140px;">
         <button type="button" class="btn-add" onclick="addArme()">➕ Ajouter l'arme</button>
       </form>
-
       <div class="overflow-x">
         <table>
           <thead>
-            <tr>
-              <th>Nom de l'arme</th>
-              <th>Localisation</th>
-              <th>Numéro de série</th>
-              <th style="text-align:center; width:80px">Action</th>
-            </tr>
+            <tr><th>Nom de l'arme</th><th>Localisation</th><th>Numéro de série</th><th style="text-align:center; width:80px">Action</th></tr>
           </thead>
           <tbody id="armes-body"></tbody>
           <tfoot>
             <tr class="total-row">
               <td colspan="4" style="text-align:center; color:#5d4037">
-                🔫 Total armes enregistrées : <span id="total-armes" style="color:#1b5e20; font-weight:bold">0</span>
+                🔫 Total armes : <span id="total-armes" style="color:#1b5e20; font-weight:bold">0</span>
                 &nbsp;|&nbsp; 📦 Au coffre : <span id="total-armes-coffre" style="color:#5d4037; font-weight:bold">0</span>
                 &nbsp;|&nbsp; 🤠 En service : <span id="total-armes-sheriff" style="color:#1b5e20; font-weight:bold">0</span>
               </td>
@@ -464,7 +453,6 @@
         </table>
       </div>
     </div>
-    <!-- === FIN NOUVEL ONGLET === -->
 
     <div id="panel-bureau" class="panel">
       <div class="section-header">
@@ -518,12 +506,7 @@
       <h3>Connexion administrateur</h3>
       <input id="admin-email" type="email" placeholder="Email">
       <input id="admin-password" type="password" placeholder="Mot de passe">
-      <button onclick="loginAdmin(
-        document.getElementById('admin-email').value,
-        document.getElementById('admin-password').value
-      )">
-        Connexion
-      </button>
+      <button onclick="loginAdmin(document.getElementById('admin-email').value,document.getElementById('admin-password').value)">Connexion</button>
     </div>
 
     <div class="footer">
@@ -532,27 +515,18 @@
   </div>
 
   <script>
-    // === CONFIG SUPABASE ===
     const SUPABASE_URL = "https://dzdnhnmwluznrxijkkzc.supabase.co";
     const SUPABASE_KEY = "sb_publishable_SLzbwvcRvPc4L1NOj_Yk8w_GvM-p8xa";
     const supabaseClient = supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
     async function loginAdmin(email, password) {
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
-      if (error) {
-        alert("Connexion refusée");
-        console.error(error);
-        return false;
-      }
-      alert("Connexion administrateur réussie");
-      return true;
+      const { data, error } = await supabaseClient.auth.signInWithPassword({email:email,password:password});
+      if (error) { alert("Connexion refusée"); console.error(error); return false; }
+      alert("Connexion administrateur réussie"); return true;
     }
 
     const sessionId = "bureau-sunset-principal";
-    const STORAGE_KEY = 'bureau_sunset_data_v4'; // incrémenté pour éviter conflit ancienne version
+    const STORAGE_KEY = 'bureau_sunset_data_v3';
 
     function getDefaultData() {
       return {
@@ -562,7 +536,7 @@
           bureau: [{article:'', type:'Arme', qte:1, etat:'✅ Neuf', notes:''}],
           saisies: [{article:'', type:'Arme', qte:1, etat:'✅ Neuf', notes:''}]
         },
-        armes: [], // NOUVEAU : inventaire des armes
+        armes: [],
         budget: [{poste:'', depense:0}],
         budgetGlobal: 5000
       };
@@ -582,53 +556,40 @@
       gatherAllData();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
       try {
-        const { error } = await supabaseClient
-          .from('bureau_data')
-          .upsert({ 
-            session_id: sessionId, 
-            data: appData,
-            updated_at: new Date().toISOString()
-          }, { onConflict: 'session_id' });
+        const { error } = await supabaseClient.from('bureau_data').upsert({session_id:sessionId,data:appData,updated_at:new Date().toISOString()},{onConflict:'session_id'});
         if (error) throw error;
-        updateSyncStatus('✅ Synchronisé avec Supabase', 'green');
+        updateSyncStatus('✅ Synchronisé avec Supabase','green');
       } catch (err) {
-        console.error('Erreur Supabase:', err);
-        updateSyncStatus('⚠️ Hors ligne (sauvegarde locale)', 'orange');
+        console.error('Erreur Supabase:',err);
+        updateSyncStatus('⚠️ Hors ligne (sauvegarde locale)','orange');
       }
     }
 
     async function loadData() {
       try {
-        const { data, error } = await supabaseClient
-          .from('bureau_data')
-          .select('data')
-          .eq('session_id', sessionId)
-          .maybeSingle();
+        const { data, error } = await supabaseClient.from('bureau_data').select('data').eq('session_id',sessionId).maybeSingle();
         if (error && error.code !== 'PGRST116') throw error;
         if (data && data.data) {
           appData = data.data;
           localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-          updateSyncStatus('✅ Données cloud chargées', 'green');
+          updateSyncStatus('✅ Données cloud chargées','green');
         } else {
           const raw = localStorage.getItem(STORAGE_KEY);
-          if (raw) {
-            try { appData = JSON.parse(raw); } catch(e) { appData = getDefaultData(); }
-          }
-          updateSyncStatus('📁 Données locales', 'orange');
+          if (raw) { try { appData = JSON.parse(raw); } catch(e) { appData = getDefaultData(); } }
+          updateSyncStatus('📁 Données locales','orange');
         }
       } catch (err) {
-        console.error('Erreur chargement Supabase:', err);
+        console.error('Erreur chargement Supabase:',err);
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          try { appData = JSON.parse(raw); } catch(e) { appData = getDefaultData(); }
-        }
-        updateSyncStatus('⚠️ Mode hors ligne', 'orange');
+        if (raw) { try { appData = JSON.parse(raw); } catch(e) { appData = getDefaultData(); } }
+        updateSyncStatus('⚠️ Mode hors ligne','orange');
       }
+      if (!appData.armes) appData.armes = [];
       renderAll();
     }
 
     async function syncNow() {
-      updateSyncStatus('🔄 Synchronisation...', 'orange');
+      updateSyncStatus('🔄 Synchronisation...','orange');
       await saveData();
       await loadData();
     }
@@ -639,8 +600,8 @@
         appData.salaires.push({
           nom: tr.cells[0].querySelector('input').value,
           grade: tr.cells[1].querySelector('select').value,
-          base: parseFloat(tr.cells[2].querySelector('input').value) || 0,
-          prime: parseFloat(tr.cells[3].querySelector('input').value) || 0
+          base: parseFloat(tr.cells[2].querySelector('input').value)||0,
+          prime: parseFloat(tr.cells[3].querySelector('input').value)||0
         });
       });
       appData.depenses = [];
@@ -649,7 +610,7 @@
           date: tr.cells[0].querySelector('input').value,
           desc: tr.cells[1].querySelector('input').value,
           cat: tr.cells[2].querySelector('select').value,
-          montant: parseFloat(tr.cells[3].querySelector('input').value) || 0
+          montant: parseFloat(tr.cells[3].querySelector('input').value)||0
         });
       });
       appData.stock.bureau = [];
@@ -657,7 +618,7 @@
         appData.stock.bureau.push({
           article: tr.cells[0].querySelector('input').value,
           type: tr.cells[1].querySelector('select').value,
-          qte: parseFloat(tr.cells[2].querySelector('input').value) || 0,
+          qte: parseFloat(tr.cells[2].querySelector('input').value)||0,
           etat: tr.cells[3].querySelector('select').value,
           notes: tr.cells[4].querySelector('input').value
         });
@@ -667,39 +628,27 @@
         appData.stock.saisies.push({
           article: tr.cells[0].querySelector('input').value,
           type: tr.cells[1].querySelector('select').value,
-          qte: parseFloat(tr.cells[2].querySelector('input').value) || 0,
+          qte: parseFloat(tr.cells[2].querySelector('input').value)||0,
           etat: tr.cells[3].querySelector('select').value,
           notes: tr.cells[4].querySelector('input').value
         });
       });
-      // NOUVEAU : gather armes
-      appData.armes = [];
-      document.querySelectorAll('#armes-body tr').forEach(tr => {
-        const loc = tr.cells[1].dataset.loc;
-        const sheriff = tr.cells[1].dataset.sheriff || '';
-        appData.armes.push({
-          nom: tr.cells[0].textContent,
-          location: loc,
-          sheriffName: sheriff,
-          serial: tr.cells[2].textContent
-        });
-      });
+      // PAS DE LECTURE DOM POUR ARMES — appData.armes est géré directement par addArme/removeArme
       appData.budget = [];
       const budgetRows = document.querySelectorAll('#budget-body tr');
       budgetRows.forEach((tr, idx) => {
         if (idx < 2) return;
         appData.budget.push({
           poste: tr.cells[0].querySelector('input')?.value || '',
-          depense: parseFloat(tr.cells[1].querySelector('input')?.value) || 0
+          depense: parseFloat(tr.cells[1].querySelector('input')?.value)||0
         });
       });
-      appData.budgetGlobal = parseFloat(document.getElementById('budget-alloue').value) || 0;
+      appData.budgetGlobal = parseFloat(document.getElementById('budget-alloue').value)||0;
     }
 
     function renderAll() {
       document.getElementById('budget-alloue').value = appData.budgetGlobal;
 
-      // Salaires
       const salTbody = document.getElementById('salaires-body');
       salTbody.innerHTML = '';
       appData.salaires.forEach(row => {
@@ -722,7 +671,6 @@
         salTbody.appendChild(tr);
       });
 
-      // Dépenses
       const depTbody = document.getElementById('depenses-body');
       depTbody.innerHTML = '';
       appData.depenses.forEach(row => {
@@ -744,7 +692,6 @@
         depTbody.appendChild(tr);
       });
 
-      // Stock bureau
       const stoBureauTbody = document.getElementById('stock-bureau-body');
       stoBureauTbody.innerHTML = '';
       appData.stock.bureau.forEach(row => {
@@ -776,7 +723,6 @@
         stoBureauTbody.appendChild(tr);
       });
 
-      // Stock saisies
       const stoSaisiesTbody = document.getElementById('stock-saisies-body');
       stoSaisiesTbody.innerHTML = '';
       appData.stock.saisies.forEach(row => {
@@ -808,10 +754,8 @@
         stoSaisiesTbody.appendChild(tr);
       });
 
-      // NOUVEAU : render armes
       renderArmes();
 
-      // Budget
       const budTbody = document.getElementById('budget-body');
       const autoRows = budTbody.querySelectorAll('.auto-row');
       budTbody.innerHTML = '';
@@ -832,7 +776,6 @@
       syncBudget();
     }
 
-    // === FONCTIONS ARMES ===
     function toggleSheriffNom() {
       const loc = document.getElementById('arme-loc').value;
       const input = document.getElementById('arme-sheriff-nom');
@@ -845,23 +788,9 @@
       const loc = document.getElementById('arme-loc').value;
       const sheriffNom = document.getElementById('arme-sheriff-nom').value.trim();
       const serial = document.getElementById('arme-serial').value.trim();
-
-      if (!nom || !loc || !serial) {
-        alert('Veuillez remplir tous les champs obligatoires.');
-        return;
-      }
-      if (loc === 'sheriff' && !sheriffNom) {
-        alert('Veuillez indiquer le nom du shérif.');
-        return;
-      }
-
-      appData.armes.push({
-        nom: nom,
-        location: loc,
-        sheriffName: sheriffNom,
-        serial: serial
-      });
-
+      if (!nom || !loc || !serial) { alert('Veuillez remplir tous les champs obligatoires.'); return; }
+      if (loc === 'sheriff' && !sheriffNom) { alert('Veuillez indiquer le nom du shérif.'); return; }
+      appData.armes.push({nom:nom, location:loc, sheriffName:sheriffNom, serial:serial});
       document.getElementById('form-armes').reset();
       toggleSheriffNom();
       renderArmes();
@@ -872,10 +801,9 @@
       const tbody = document.getElementById('armes-body');
       tbody.innerHTML = '';
       let coffre = 0, sheriff = 0;
-
       if (!appData.armes || appData.armes.length === 0) {
         const tr = document.createElement('tr');
-        tr.innerHTML = '<td colspan="4" style="text-align:center; color:#8d6e63; font-style:italic; padding:16px;">Aucune arme enregistrée dans l'inventaire</td>';
+        tr.innerHTML = '<td colspan="4" style="text-align:center; color:#8d6e63; font-style:italic; padding:16px;">Aucune arme enregistrée dans l\'inventaire</td>';
         tbody.appendChild(tr);
       } else {
         appData.armes.forEach((x, i) => {
@@ -884,7 +812,6 @@
           const badgeClass = isCoffre ? 'badge-coffre' : 'badge-sheriff';
           const badgeText = isCoffre ? '📦 Au coffre' : '🤠 Sur ' + escapeHtml(x.sheriffName || 'un shérif');
           if (isCoffre) coffre++; else sheriff++;
-
           tr.innerHTML = `
             <td>${escapeHtml(x.nom)}</td>
             <td data-loc="${escapeHtml(x.location)}" data-sheriff="${escapeHtml(x.sheriffName||'')}"><span class="${badgeClass}">${badgeText}</span></td>
@@ -894,7 +821,6 @@
           tbody.appendChild(tr);
         });
       }
-
       document.getElementById('total-armes').textContent = (appData.armes || []).length;
       document.getElementById('total-armes-coffre').textContent = coffre;
       document.getElementById('total-armes-sheriff').textContent = sheriff;
@@ -905,7 +831,6 @@
       renderArmes();
       saveData();
     }
-    // === FIN FONCTIONS ARMES ===
 
     function escapeHtml(text) {
       if (!text) return '';
@@ -913,22 +838,19 @@
     }
 
     function syncBudget() {
-      const totalSal = parseFloat(document.getElementById('total-masse')?.textContent) || 0;
-      const totalDep = parseFloat(document.getElementById('total-depenses')?.textContent) || 0;
+      const totalSal = parseFloat(document.getElementById('total-masse')?.textContent)||0;
+      const totalDep = parseFloat(document.getElementById('total-depenses')?.textContent)||0;
       document.getElementById('auto-salaires').textContent = totalSal.toFixed(0);
       document.getElementById('auto-depenses').textContent = totalDep.toFixed(0);
       let totalBureauManuel = 0;
-      document.querySelectorAll('#budget-body tr:not(.auto-row) .budget-depense').forEach(i => {
-        totalBureauManuel += parseFloat(i.value) || 0;
-      });
+      document.querySelectorAll('#budget-body tr:not(.auto-row) .budget-depense').forEach(i => { totalBureauManuel += parseFloat(i.value)||0; });
       const totalGlobal = totalSal + totalDep + totalBureauManuel;
-      const budgetGlobal = parseFloat(document.getElementById('budget-alloue').value) || 0;
+      const budgetGlobal = parseFloat(document.getElementById('budget-alloue').value)||0;
       const solde = budgetGlobal - totalGlobal;
       document.getElementById('total-bureau-depense').textContent = totalGlobal.toFixed(0) + ' $';
       document.getElementById('total-global-depense').textContent = totalGlobal.toFixed(0) + ' $';
       document.getElementById('solde-restant').textContent = solde.toFixed(0) + ' $';
-      const soldeEl = document.getElementById('solde-restant');
-      soldeEl.style.color = solde < 0 ? '#c62828' : '#2e7d32';
+      document.getElementById('solde-restant').style.color = solde < 0 ? '#c62828' : '#2e7d32';
     }
 
     function calcBudget() { syncBudget(); }
@@ -936,7 +858,7 @@
     function exportData() {
       gatherAllData();
       const dataStr = JSON.stringify(appData, null, 2);
-      const blob = new Blob([dataStr], {type: 'application/json'});
+      const blob = new Blob([dataStr], {type:'application/json'});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -944,10 +866,7 @@
       a.style.display = 'none';
       document.body.appendChild(a);
       a.click();
-      setTimeout(function() {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 2000);
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 2000);
     }
 
     function importData(input) {
@@ -959,17 +878,13 @@
           const data = JSON.parse(e.target.result);
           if (data.salaires && data.depenses && data.stock && data.budget !== undefined) {
             appData = data;
-            if (!appData.armes) appData.armes = []; // compatibilité anciennes sauvegardes
+            if (!appData.armes) appData.armes = [];
             localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
             renderAll();
             await saveData();
             alert('✅ Données importées avec succès !');
-          } else {
-            alert('❌ Fichier invalide.');
-          }
-        } catch(err) {
-          alert('❌ Erreur lors de l\'import.');
-        }
+          } else { alert('❌ Fichier invalide.'); }
+        } catch(err) { alert('❌ Erreur lors de l\'import.'); }
       };
       reader.readAsText(file);
       input.value = '';
@@ -984,11 +899,11 @@
       }
     }
 
-    function switchTab(tabName) {
+    function switchTab(btn, tabName) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.getElementById('panel-' + tabName).classList.add('active');
-      event.target.classList.add('active');
+      btn.classList.add('active');
     }
 
     const gradeData = {
@@ -1012,62 +927,38 @@
 
     function calcTotal(el) {
       const row = el.closest('tr');
-      const base = parseFloat(row.querySelector('.salaire-base').value) || 0;
-      const prime = parseFloat(row.querySelector('.salaire-prime').value) || 0;
+      const base = parseFloat(row.querySelector('.salaire-base').value)||0;
+      const prime = parseFloat(row.querySelector('.salaire-prime').value)||0;
       row.querySelector('.salaire-total').textContent = (base + prime).toFixed(0);
       calcMasseSalariale();
     }
 
     function calcMasseSalariale() {
       let total = 0;
-      document.querySelectorAll('.salaire-total').forEach(t => total += parseFloat(t.textContent) || 0);
+      document.querySelectorAll('.salaire-total').forEach(t => total += parseFloat(t.textContent)||0);
       document.getElementById('total-masse').textContent = total.toFixed(0) + ' $';
     }
 
     function calcTotalDepenses() {
       let total = 0;
-      document.querySelectorAll('.depense-montant').forEach(i => total += parseFloat(i.value) || 0);
+      document.querySelectorAll('.depense-montant').forEach(i => total += parseFloat(i.value)||0);
       document.getElementById('total-depenses').textContent = total.toFixed(0) + ' $';
     }
 
     function calcTotalStock() {
       let totalBureau = 0;
-      document.querySelectorAll('#stock-bureau-body input[type="number"]').forEach(i => totalBureau += parseFloat(i.value) || 0);
+      document.querySelectorAll('#stock-bureau-body input[type="number"]').forEach(i => totalBureau += parseFloat(i.value)||0);
       document.getElementById('total-stock-bureau').textContent = totalBureau.toFixed(0);
       let totalSaisies = 0;
-      document.querySelectorAll('#stock-saisies-body input[type="number"]').forEach(i => totalSaisies += parseFloat(i.value) || 0);
+      document.querySelectorAll('#stock-saisies-body input[type="number"]').forEach(i => totalSaisies += parseFloat(i.value)||0);
       document.getElementById('total-stock-saisies').textContent = totalSaisies.toFixed(0);
     }
 
-    function addSalarie() {
-      appData.salaires.push({nom:'', grade:'0', base:0, prime:0});
-      renderAll();
-      saveData();
-    }
-
-    function addDepense() {
-      appData.depenses.push({date:'', desc:'', cat:'Nourriture', montant:0});
-      renderAll();
-      saveData();
-    }
-
-    function addStockBureau() {
-      appData.stock.bureau.push({article:'', type:'Arme', qte:1, etat:'✅ Neuf', notes:''});
-      renderAll();
-      saveData();
-    }
-
-    function addStockSaisies() {
-      appData.stock.saisies.push({article:'', type:'Arme', qte:1, etat:'✅ Neuf', notes:''});
-      renderAll();
-      saveData();
-    }
-
-    function addBudget() {
-      appData.budget.push({poste:'', depense:0});
-      renderAll();
-      saveData();
-    }
+    function addSalarie() { appData.salaires.push({nom:'', grade:'0', base:0, prime:0}); renderAll(); saveData(); }
+    function addDepense() { appData.depenses.push({date:'', desc:'', cat:'Nourriture', montant:0}); renderAll(); saveData(); }
+    function addStockBureau() { appData.stock.bureau.push({article:'', type:'Arme', qte:1, etat:'✅ Neuf', notes:''}); renderAll(); saveData(); }
+    function addStockSaisies() { appData.stock.saisies.push({article:'', type:'Arme', qte:1, etat:'✅ Neuf', notes:''}); renderAll(); saveData(); }
+    function addBudget() { appData.budget.push({poste:'', depense:0}); renderAll(); saveData(); }
 
     function removeRow(btn) {
       btn.closest('tr').remove();
@@ -1076,11 +967,6 @@
       calcTotalDepenses();
       calcTotalStock();
       syncBudget();
-      // Si on est dans l'onglet armes, recalculer les totaux
-      if (document.getElementById('panel-armes').classList.contains('active')) {
-        gatherAllData();
-        renderArmes();
-      }
     }
 
     window.addEventListener('DOMContentLoaded', () => loadData());
