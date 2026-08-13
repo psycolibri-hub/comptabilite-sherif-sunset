@@ -485,21 +485,41 @@
         <h2>🏛️ Budget du Bureau</h2>
         <button class="btn-add" onclick="addBudget()">➕ Ligne budgétaire</button>
       </div>
+
       <div class="budget-cards">
         <div class="budget-card">
-          <div class="label">💰 Budget Alloué</div>
-          <input id="budget-alloue" type="number" value="5000" oninput="calcBudget(); saveData();">
-          <span style="font-size:18px; color:#1b5e20; font-weight:bold"> $</span>
+          <div class="label">💰 Total Revenus</div>
+          <div id="total-revenus" class="value" style="color:#1b5e20">0 $</div>
         </div>
         <div class="budget-card">
           <div class="label">📉 Total Dépensé</div>
           <div id="total-global-depense" class="value" style="color:#c62828">0 $</div>
         </div>
         <div class="budget-card">
-          <div class="label">💵 Solde Restant</div>
-          <div id="solde-restant" class="value">5000 $</div>
+          <div class="label">💵 Solde Actuel</div>
+          <div id="solde-restant" class="value">0 $</div>
         </div>
       </div>
+
+      <h3 style="margin:8px 0 8px; font-size:16px; color:#5d4037; border-bottom:1px dashed #a1887f; padding-bottom:4px;">📥 Rentrées d'argent</h3>
+      <div class="overflow-x">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Description</th><th style="text-align:center">Montant ($)</th><th style="text-align:center">Action</th></tr>
+          </thead>
+          <tbody id="revenus-body"></tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td colspan="2" style="text-align:right">📈 TOTAL REVENUS :</td>
+              <td id="total-revenus-table" class="total-green" style="text-align:center">0 $</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <button class="btn-add" onclick="addRevenu()" style="margin:8px 0 16px;">➕ Ajouter une rentrée</button>
+
+      <h3 style="margin:16px 0 8px; font-size:16px; color:#5d4037; border-bottom:1px dashed #a1887f; padding-bottom:4px;">📤 Postes budgétaires</h3>
       <div class="overflow-x">
         <table>
           <thead>
@@ -527,7 +547,6 @@
         </table>
       </div>
     </div>
-
     <div style="text-align:center; margin:20px;">
       <h3>Connexion administrateur</h3>
       <input id="admin-email" type="email" placeholder="Email">
@@ -564,7 +583,7 @@
         },
         armes: [],
         budget: [{poste:'', depense:0}],
-        budgetGlobal: 5000
+        revenus: []
       };
     }
 
@@ -660,6 +679,14 @@
         });
       });
       // PAS DE LECTURE DOM POUR ARMES — appData.armes est géré directement par addArme/removeArme
+      appData.revenus = [];
+      document.querySelectorAll('#revenus-body tr').forEach(tr => {
+        appData.revenus.push({
+          date: tr.cells[0].querySelector('input').value,
+          desc: tr.cells[1].querySelector('input').value,
+          montant: parseFloat(tr.cells[2].querySelector('input').value)||0
+        });
+      });
       appData.budget = [];
       const budgetRows = document.querySelectorAll('#budget-body tr');
       budgetRows.forEach((tr, idx) => {
@@ -669,12 +696,10 @@
           depense: parseFloat(tr.cells[1].querySelector('input')?.value)||0
         });
       });
-      appData.budgetGlobal = parseFloat(document.getElementById('budget-alloue').value)||0;
+      
     }
 
     function renderAll() {
-      document.getElementById('budget-alloue').value = appData.budgetGlobal;
-
       const salTbody = document.getElementById('salaires-body');
       salTbody.innerHTML = '';
       appData.salaires.forEach(row => {
@@ -782,6 +807,20 @@
 
       renderArmes();
 
+      // Rendu des revenus
+      const revTbody = document.getElementById('revenus-body');
+      revTbody.innerHTML = '';
+      appData.revenus.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><input type="date" style="width:100%" value="${escapeHtml(row.date)}" oninput="saveData(); syncBudget();"></td>
+          <td><input type="text" placeholder="Ex: Subvention Texas Ranger..." value="${escapeHtml(row.desc)}" oninput="saveData(); syncBudget();"></td>
+          <td style="text-align:center"><input type="number" class="revenu-montant" value="${row.montant}" style="width:80px" oninput="calcTotalRevenus(); saveData(); syncBudget();"></td>
+          <td style="text-align:center"><button class="btn-delete" onclick="removeRevenu(this)">❌</button></td>
+        `;
+        revTbody.appendChild(tr);
+      });
+
       const budTbody = document.getElementById('budget-body');
       const autoRows = budTbody.querySelectorAll('.auto-row');
       budTbody.innerHTML = '';
@@ -866,17 +905,19 @@
     function syncBudget() {
       const totalSal = parseFloat(document.getElementById('total-masse')?.textContent)||0;
       const totalDep = parseFloat(document.getElementById('total-depenses')?.textContent)||0;
+      const totalRev = parseFloat(document.getElementById('total-revenus')?.textContent)||0;
       document.getElementById('auto-salaires').textContent = totalSal.toFixed(0);
       document.getElementById('auto-depenses').textContent = totalDep.toFixed(0);
       let totalBureauManuel = 0;
       document.querySelectorAll('#budget-body tr:not(.auto-row) .budget-depense').forEach(i => { totalBureauManuel += parseFloat(i.value)||0; });
-      const totalGlobal = totalSal + totalDep + totalBureauManuel;
-      const budgetGlobal = parseFloat(document.getElementById('budget-alloue').value)||0;
-      const solde = budgetGlobal - totalGlobal;
-      document.getElementById('total-bureau-depense').textContent = totalGlobal.toFixed(0) + ' $';
-      document.getElementById('total-global-depense').textContent = totalGlobal.toFixed(0) + ' $';
+      const totalDepenses = totalSal + totalDep + totalBureauManuel;
+      const solde = totalRev - totalDepenses;
+      document.getElementById('total-bureau-depense').textContent = totalDepenses.toFixed(0) + ' $';
+      document.getElementById('total-global-depense').textContent = totalDepenses.toFixed(0) + ' $';
       document.getElementById('solde-restant').textContent = solde.toFixed(0) + ' $';
       document.getElementById('solde-restant').style.color = solde < 0 ? '#c62828' : '#2e7d32';
+      document.getElementById('total-revenus').textContent = totalRev.toFixed(0) + ' $';
+      document.getElementById('total-revenus-table').textContent = totalRev.toFixed(0) + ' $';
     }
 
     function calcBudget() { syncBudget(); }
@@ -985,6 +1026,19 @@
     function addStockBureau() { appData.stock.bureau.push({article:'', type:'Arme', qte:1, etat:'✅ Neuf', notes:''}); renderAll(); saveData(); }
     function addStockSaisies() { appData.stock.saisies.push({article:'', type:'Arme', qte:1, etat:'✅ Neuf', notes:''}); renderAll(); saveData(); }
     function addBudget() { appData.budget.push({poste:'', depense:0}); renderAll(); saveData(); }
+    function addRevenu() { appData.revenus.push({date:'', desc:'', montant:0}); renderAll(); saveData(); }
+    function calcTotalRevenus() {
+      let total = 0;
+      document.querySelectorAll('.revenu-montant').forEach(i => total += parseFloat(i.value)||0);
+      document.getElementById('total-revenus-table').textContent = total.toFixed(0) + ' $';
+      document.getElementById('total-revenus').textContent = total.toFixed(0) + ' $';
+    }
+    function removeRevenu(btn) {
+      btn.closest('tr').remove();
+      saveData();
+      calcTotalRevenus();
+      syncBudget();
+    }
 
     function removeRow(btn) {
       btn.closest('tr').remove();
