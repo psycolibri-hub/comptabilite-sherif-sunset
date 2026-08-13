@@ -41,6 +41,31 @@
       border-bottom: 2px dashed #8d6e63;
       padding-bottom: 12px;
       margin-bottom: 16px;
+      position: relative;
+    }
+    .btn-retour {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: #8d6e63;
+      border: 1.5px solid #5d4037;
+      border-radius: 4px;
+      color: #f4e4c1;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-retour:hover {
+      background: #5d4037;
+      border-color: #3e2723;
     }
     .tabs {
       display: flex;
@@ -296,6 +321,7 @@
 <body>
   <div class="container">
     <div class="header-line">
+      <a href="index.html" class="btn-retour">← Retour</a>
       <h1>🤠 Bureau des Shérifs de Sunset</h1>
       <p class="subtitle">État du Texas — Registre officiel</p>
     </div>
